@@ -17,11 +17,12 @@ import { BrowserMediaSessionService } from './services/browserintegration/media-
 import { listContent } from './redux/actions';
 import { sleep } from './utils';
 import { SettingsResetErrorBoundary } from './components/settings-reset-error-boundary';
+import { installFrenchRuntime } from './i18n/runtime';
 serviceRegistry.mediaRecorderService = new MediaRecorderService();
 serviceRegistry.mediaSessionService = new BrowserMediaSessionService(store);
 
 Object.defineProperty(window, 'wmdVersion', {
-    value: '1.6.2',
+    value: '1.6.2-mdb.1',
     writable: false,
 });
 
@@ -146,3 +147,6 @@ root.render(
         </SettingsResetErrorBoundary>
     </Provider>
 );
+
+// Traduction française de l'interface (voir src/i18n/).
+installFrenchRuntime();

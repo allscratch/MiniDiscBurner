@@ -2,6 +2,14 @@ import { ChangelogVersion } from "./bridge-types";
 
 export const CHANGELOG: ChangelogVersion[] = [
     {
+        name: "MiniDiscBurner 1.0",
+        contents: [
+            "Fork personnel de Web MiniDisc Pro 1.6.2",
+            "Interface disponible en français",
+            "Nouvelle identité visuelle et nouvelle icône",
+        ],
+    },
+    {
         name: "Version 1.6.2",
         contents: [
             "Fix race condition in encoder setup",

@@ -130,15 +130,15 @@ const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            light: '#6ec6ff',
-            main: '#2196f3',
-            dark: '#0069c0',
-            contrastText: '#fff',
+            light: '#ffb74d',
+            main: '#ff9800',
+            dark: '#e65100',
+            contrastText: '#1a1a1a',
         },
         secondary: {
-            light: '#ff4081',
-            main: '#f50057',
-            dark: '#c51162',
+            light: '#ff8a80',
+            main: '#ff5252',
+            dark: '#c62828',
         },
         background: {
             default: '#303030',
@@ -165,15 +165,15 @@ const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            light: '#7986cb',
-            main: '#3f51b5',
-            dark: '#303f9f',
+            light: '#ffb74d',
+            main: '#f57c00',
+            dark: '#e65100',
             contrastText: '#fff',
         },
         secondary: {
-            light: '#ff4081',
-            main: '#f50057',
-            dark: '#c51162',
+            light: '#ff8a80',
+            main: '#d32f2f',
+            dark: '#b71c1c',
             contrastText: '#fff',
         },
         error: {
@@ -262,7 +262,11 @@ const InternalApp = () => {
                         <Box className={classes.controlsContainer}>{mainView === 'MAIN' ? <Controls /> : null}</Box>
                     </Paper>
                     <Typography variant="body2" color="textSecondary" className={classes.copyrightTypography}>
-                        {'© '}
+                        {'MiniDiscBurner · basé sur '}
+                        <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/webminidisc">
+                            Web MiniDisc Pro
+                        </Link>
+                        {' · © '}
                         <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://stefano.brilli.me/">
                             Stefano Brilli
                         </Link>

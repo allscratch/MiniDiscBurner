@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, batchActions, useDeviceCapabilities } from '../frontend-utils';
 
 import IconButton from '@mui/material/IconButton';
@@ -42,8 +42,10 @@ import { MenuOpen as MenuOpenIcon } from '@mui/icons-material'
 import { ArrowUpward as ArrowUpwardIcon } from '@mui/icons-material'
 import { Storage as StorageIcon } from '@mui/icons-material'
 import { Code as CodeIcon } from '@mui/icons-material'
+import { Language as LanguageIcon } from '@mui/icons-material'
 
 import { W95TopMenu } from './win95/topmenu';
+import { setFrenchEnabled } from '../i18n/runtime';
 import { ExploitCapability } from '../services/interfaces/netmd';
 import {
     archiveDisc,
@@ -71,6 +73,13 @@ const useStyles = makeStyles()((theme) => ({
 export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: () => void }) {
     const { classes } = useStyles();
     const dispatch = useDispatch();
+    const [french, setFrench] = useState(() => {
+        try {
+            return localStorage.getItem('mdb-language') !== 'en';
+        } catch {
+            return true;
+        }
+    });
 
     const { mainView, vintageMode, factoryModeRippingInMainUi, factoryModeShortcuts } = useShallowEqualSelector((state) => state.appState);
     const { disc } = useShallowEqualSelector((state) => state.main);
@@ -554,6 +563,21 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         </MenuItem>
     );
     menuItems.push(
+        <MenuItem
+            key="language"
+            onClick={() => {
+                const next = !french;
+                setFrench(next);
+                setFrenchEnabled(next);
+            }}
+        >
+            <ListItemIcon className={classes.listItemIcon}>
+                <LanguageIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>{`Langue : ${french ? 'Français' : 'English'}`}</ListItemText>
+        </MenuItem>
+    );
+    menuItems.push(
         <MenuItem key="github" onClick={handleGithubLink}>
             <ListItemIcon className={classes.listItemIcon}>
                 <GitHubIcon fontSize="small" />
@@ -561,12 +585,12 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
             <ListItemText>
                 <Link
                     rel="noopener noreferrer"
-                    href="https://github.com/asivery/webminidisc"
+                    href="https://github.com/allscratch/MiniDiscBurner"
                     target="_blank"
                     ref={githubLinkRef}
                     onClick={handleGithubLink}
                 >
-                    Fork me on GitHub
+                    MiniDiscBurner sur GitHub
                 </Link>
             </ListItemText>
         </MenuItem>

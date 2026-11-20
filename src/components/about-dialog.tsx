@@ -45,9 +45,15 @@ export const AboutDialog = (props: {}) => {
             TransitionComponent={Transition as any}
             aria-labelledby="about-dialog-slide-title"
         >
-            <DialogTitle id="about-dialog-slide-title">About Web MiniDisc Pro</DialogTitle>
+            <DialogTitle id="about-dialog-slide-title">About MiniDiscBurner</DialogTitle>
             <DialogContent>
-                <DialogContentText>Web MiniDisc Pro uses</DialogContentText>
+                <DialogContentText>
+                    MiniDiscBurner est un fork personnel de{' '}
+                    <Link rel="noopener noreferrer" href="https://github.com/asivery/webminidisc" target="_blank">
+                        Web MiniDisc Pro
+                    </Link>
+                    . MiniDiscBurner utilise
+                </DialogContentText>
                 <ul>
                     <li>
                         <Link rel="noopener noreferrer" href="https://www.ffmpeg.org/" target="_blank">

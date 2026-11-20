@@ -1,18 +1,19 @@
 {
-  "name": "webminidisc-pro",
+  "name": "minidiscburner",
   "private": true,
-  "version": "1.6.2",
+  "version": "1.6.2-mdb.1",
+  "description": "MiniDiscBurner - transfert audio vers les appareils MiniDisc NetMD et HiMD",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/asivery/webminidisc.git"
+    "url": "git+https://github.com/allscratch/MiniDiscBurner.git"
   },
-  "author": "asivery",
+  "author": "allscratch",
   "license": "GPL-2.0",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/asivery/webminidisc/issues"
+    "url": "https://github.com/allscratch/MiniDiscBurner/issues"
   },
-  "homepage": "https://web.minidisc.wiki/",
+  "homepage": "https://github.com/allscratch/MiniDiscBurner",
   "scripts": {
     "start": "npm run dev",
     "dev": "npm run update-version && vite",

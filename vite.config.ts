@@ -27,9 +27,9 @@ export default ({ mode }) => {
         registerType: 'autoUpdate',
         manifestFilename: 'manifest.json',
         manifest: {
-          "short_name": "Web MiniDisc",
-          "name": "Web MiniDisc",
-          "description": "Upload music to NetMD MiniDisc devices",
+          "short_name": "MiniDiscBurner",
+          "name": "MiniDiscBurner",
+          "description": "Transférez votre musique vers les appareils MiniDisc NetMD et HiMD",
           "icons": [
             {
               "src": "MiniDisc192.png",
@@ -49,7 +49,7 @@ export default ({ mode }) => {
           ],
           "start_url": ".",
           "display": "standalone",
-          "theme_color": "#000000",
+          "theme_color": "#e65100",
           "orientation": "portrait",
           "background_color": "#ffffff",
         },
