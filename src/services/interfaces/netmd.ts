@@ -34,7 +34,7 @@ import {
     readPatch,
     formatToHiMD,
 } from 'netmd-js';
-import { makeGetAsyncPacketIteratorOnWorkerThread } from 'netmd-js/dist/web-encrypt-worker';
+import { makeGetAsyncPacketIteratorOnWorkerThread } from '../../workers/web-encrypt-worker-helper';
 import { Logger } from 'netmd-js/dist/logger';
 import { sanitizeHalfWidthTitle, sanitizeFullWidthTitle, concatUint8Arrays } from 'netmd-js/dist/utils';
 import { asyncMutex, sleep, isSequential, recomputeGroupsAfterTrackMove, getPublicPathFor } from '../../utils';
@@ -61,7 +61,7 @@ import {
 import netmdExploits from 'netmd-exploits';
 import netmdTocmanip from 'netmd-tocmanip';
 import { HiMDCodecName } from 'himd-js';
-import Worker from 'netmd-js/dist/web-encrypt-worker?worker';
+import Worker from '../../workers/web-encrypt-worker?worker';
 
 export enum Capability {
     contentList,

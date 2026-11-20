@@ -1,10 +1,10 @@
 import { getCellsForTitle, getRemainingCharactersForTitles, MDTrack } from 'netmd-js';
 import { Logger } from 'netmd-js/dist/logger';
 import { concatUint8Arrays } from 'netmd-js/dist/utils';
-import { makeGetAsyncPacketIteratorOnWorkerThread } from 'netmd-js/dist/web-encrypt-worker';
+import { makeGetAsyncPacketIteratorOnWorkerThread } from '../../workers/web-encrypt-worker-helper';
 import { asyncMutex } from '../../utils';
 import { Capability, NetMDService, Group, Disc, Track, convertDiscToNJS, convertTrackToNJS, Codec, WireformatDict } from './netmd';
-import Worker from 'netmd-js/dist/web-encrypt-worker?worker';
+import Worker from '../../workers/web-encrypt-worker?worker';
 
 export class NetMDRemoteService extends NetMDService {
     private logger?: Logger;
