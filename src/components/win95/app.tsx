@@ -125,15 +125,16 @@ export const W95App = () => {
                     </>
                     <Panel variant="well">
                         &nbsp;
-                        {' (c) '}
+                        {'MiniDiscBurner (c) '}
+                        {new Date().getFullYear()}
+                        {' - fork de Web MiniDisc Pro - (c) '}
                         <Anchor rel="noopener noreferrer" color="inherit" target="_blank" href="https://stefano.brilli.me/">
                             Stefano Brilli
                         </Anchor>
-                        {', '}
+                        {' et '}
                         <Anchor rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/">
                             Asivery
-                        </Anchor>{' '}
-                        {new Date().getFullYear()}
+                        </Anchor>
                         {'.'}
                     </Panel>
                     {loading ? (

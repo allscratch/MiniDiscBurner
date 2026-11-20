@@ -324,7 +324,9 @@ const InternalApp = () => {
                         <Box className={classes.controlsContainer}>{mainView === 'MAIN' ? <Controls /> : null}</Box>
                     </Paper>
                     <Typography variant="body2" color="textSecondary" className={classes.copyrightTypography}>
-                        {'MiniDiscBurner · basé sur '}
+                        {'MiniDiscBurner © '}
+                        {new Date().getFullYear()}
+                        {' · fork de '}
                         <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/webminidisc">
                             Web MiniDisc Pro
                         </Link>
@@ -332,11 +334,10 @@ const InternalApp = () => {
                         <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://stefano.brilli.me/">
                             Stefano Brilli
                         </Link>
-                        {', '}
+                        {' et '}
                         <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/">
                             Asivery
-                        </Link>{' '}
-                        {new Date().getFullYear()}
+                        </Link>
                         {'.'}
                     </Typography>
                 </main>
