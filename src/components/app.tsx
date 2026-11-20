@@ -14,57 +14,38 @@ import Box from '@mui/material/Box';
 import { W95App } from './win95/app';
 import { validateAndLoadEncoders } from '../redux/actions';
 import { EncoderDownloadDialog } from './encoder-download-dialog';
+import { StudioTopbar } from '../studio/topbar';
+import '../studio/studio.css';
 
 const Toc = lazy(() => import('./factory/factory'));
 const Controls = lazy(() => import('./controls'));
 const Welcome = lazy(() => import('./welcome'));
 const Main = lazy(() => import('./main'));
 const useStyles = makeStyles()((theme) => ({
+    // Le design « Studio » remplace l'ancien panneau étroit (600/700 px) par
+    // une mise en page large en deux colonnes ; les classes ci-dessous sont
+    // conservées pour ne pas casser les appels à cx() plus bas.
     layout: {
-        width: 'auto',
+        width: '100%',
+        maxWidth: 1180,
         height: '100%',
-        [forAnyDesktop(theme)]: {
-            width: 600,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-        [forWideDesktop(theme)]: {
-            width: 700,
-        },
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
 
     paper: {
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: theme.spacing(2),
-        height: 'calc(100% - 20px)',
-        [forAnyDesktop(theme)]: {
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(1),
-            padding: theme.spacing(3),
-            height: 200,
-        },
-        [forWideDesktop(theme)]: {
-            height: 250,
-        },
+        display: 'block',
+        width: '100%',
+        height: 'auto',
+        padding: 0,
+        margin: 0,
+        background: 'transparent',
+        boxShadow: 'none',
     },
-    paperShowsList: {
-        [forAnyDesktop(theme)]: {
-            height: 600,
-        },
-        [forWideDesktop(theme)]: {
-            height: 700,
-        },
-    },
-    paperFullHeight: {
-        height: 'calc(100% - 50px)',
-    },
-    layoutFullWidth: {
-        [forAnyDesktop(theme)]: {
-            width: '90%',
-        },
-    },
+    paperShowsList: {},
+    paperFullHeight: {},
+    layoutFullWidth: {},
     bottomBar: {
         display: 'flex',
         alignItems: 'center',
@@ -290,7 +271,7 @@ const lightTheme = createTheme({
 
 const InternalApp = () => {
     const { mainView, loading, pageFullHeight, pageFullWidth } = useShallowEqualSelector((state) => state.appState);
-    const { deviceCapabilities } = useShallowEqualSelector((state) => state.main);
+    const { deviceCapabilities, deviceName } = useShallowEqualSelector((state) => state.main);
     const { classes, cx } = useStyles();
     const dispatch = useDispatch();
 
@@ -310,36 +291,43 @@ const InternalApp = () => {
                     </Backdrop>
                 }
             >
-                <main className={cx(classes.layout, { [classes.layoutFullWidth]: pageFullWidth })}>
-                    <Paper
-                        className={cx(classes.paper, {
-                            [classes.paperShowsList]: deviceCapabilities.includes(0 /*Capability.listContent*/),
-                            [classes.paperFullHeight]: pageFullHeight,
-                        })}
-                    >
-                        {mainView === 'WELCOME' ? <Welcome /> : null}
-                        {mainView === 'MAIN' ? <Main /> : null}
-                        {mainView === 'FACTORY' ? <Toc /> : null}
+                <main className={cx(classes.layout, 'mdb-shell', { [classes.layoutFullWidth]: pageFullWidth })}>
+                    <div className="mdb-shell-inner">
+                        <StudioTopbar view={mainView} deviceName={deviceName} />
+                        <Paper
+                            className={cx(classes.paper, {
+                                [classes.paperShowsList]: deviceCapabilities.includes(0 /*Capability.listContent*/),
+                                [classes.paperFullHeight]: pageFullHeight,
+                            })}
+                        >
+                            {mainView === 'WELCOME' ? <Welcome /> : null}
+                            {mainView === 'MAIN' ? <Main /> : null}
+                            {mainView === 'FACTORY' ? <Toc /> : null}
 
-                        <Box className={classes.controlsContainer}>{mainView === 'MAIN' ? <Controls /> : null}</Box>
-                    </Paper>
-                    <Typography variant="body2" color="textSecondary" className={classes.copyrightTypography}>
-                        {'MiniDiscBurner © '}
-                        {new Date().getFullYear()}
-                        {' · fork de '}
-                        <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/webminidisc">
-                            Web MiniDisc Pro
-                        </Link>
-                        {' · © '}
-                        <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://stefano.brilli.me/">
-                            Stefano Brilli
-                        </Link>
-                        {' et '}
-                        <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/">
-                            Asivery
-                        </Link>
-                        {'.'}
-                    </Typography>
+                            {mainView === 'MAIN' ? (
+                                <Box className={cx(classes.controlsContainer, 'mdb-controls')}>
+                                    <Controls />
+                                </Box>
+                            ) : null}
+                        </Paper>
+                        <Typography variant="body2" color="textSecondary" className={cx(classes.copyrightTypography, 'mdb-footer')}>
+                            {'MiniDiscBurner © '}
+                            {new Date().getFullYear()}
+                            {' · fork de '}
+                            <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/webminidisc">
+                                Web MiniDisc Pro
+                            </Link>
+                            {' · © '}
+                            <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://stefano.brilli.me/">
+                                Stefano Brilli
+                            </Link>
+                            {' et '}
+                            <Link rel="noopener noreferrer" color="inherit" target="_blank" href="https://github.com/asivery/">
+                                Asivery
+                            </Link>
+                            {'.'}
+                        </Typography>
+                    </div>
                 </main>
             </Suspense>
 

@@ -569,6 +569,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
                 const next = !french;
                 setFrench(next);
                 setFrenchEnabled(next);
+                window.dispatchEvent(new CustomEvent('mdb-language-change', { detail: next }));
             }}
         >
             <ListItemIcon className={classes.listItemIcon}>

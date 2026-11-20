@@ -11,7 +11,18 @@ import {
     DroppableProvided,
     DroppableStateSnapshot,
 } from '@hello-pangea/dnd';
-import { listContent, deleteTracks, moveTrack, groupTracks, deleteGroups, dragDropTrack, ejectDisc, flushDevice } from '../redux/actions';
+import {
+    listContent,
+    deleteTracks,
+    moveTrack,
+    groupTracks,
+    deleteGroups,
+    dragDropTrack,
+    ejectDisc,
+    flushDevice,
+    wipeDisc,
+    exportCSV,
+} from '../redux/actions';
 import { actions as renameDialogActions, RenameType } from '../redux/rename-dialog-feature';
 import { actions as convertDialogActions } from '../redux/convert-dialog-feature';
 import { actions as dumpDialogActions } from '../redux/dump-dialog-feature';
@@ -65,7 +76,6 @@ import { PanicDialog } from './panic-dialog';
 import { ConvertDialog } from './convert-dialog';
 import { AboutDialog } from './about-dialog';
 import { DumpDialog } from './dump-dialog';
-import { TopMenu } from './topmenu';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import { W95Main } from './win95/main';
@@ -547,37 +557,86 @@ export const Main = (props: {}) => {
         return <W95Main {...p} />;
     }
 
+    const usedPercent = disc && disc.total > 0 ? Math.round(((disc.total - disc.left) * 100) / disc.total) : 0;
+    const queueDuration = tracks.reduce((total, track) => total + track.duration, 0);
+
     return (
         <React.Fragment>
-            <Box className={classes.headBox}>
-                <Typography component="h1" variant="h4">
-                    {deviceName || `Loading...`}
-                </Typography>
-                <span>
-                    {deviceCapabilities.discEject && (
-                        <IconButton
-                            aria-label="actions"
-                            aria-controls="actions-menu"
-                            aria-haspopup="true"
-                            onClick={handleEject}
-                            disabled={!disc}
+            <div className="mdb-hero">
+                <section className="mdb-card mdb-transfer-card">
+                    <div className="mdb-eyebrow">Transfer studio</div>
+                    <Typography component="h1" className="mdb-h1">
+                        Transfer your music
+                        <br />
+                        to your MiniDisc.
+                    </Typography>
+                    <Typography component="p" className="mdb-lead">
+                        Drop your files, choose the format and let MiniDiscBurner do the rest. Your recorder is ready.
+                    </Typography>
+                    <button
+                        type="button"
+                        className="mdb-drop"
+                        onClick={() => open()}
+                        disabled={!deviceCapabilities.trackUpload}
+                    >
+                        <div className="mdb-drop-icon" aria-hidden="true">↥</div>
+                        <strong>Drop your files here</strong>
+                        <small>or click to browse your folders</small>
+                    </button>
+                    <div className="mdb-row">
+                        <button
+                            type="button"
+                            className="mdb-btn"
+                            onClick={openUploadMenu}
+                            disabled={!deviceCapabilities.trackUpload}
                         >
-                            <EjectIcon />
-                        </IconButton>
-                    )}
+                            Choose files
+                        </button>
+                        <button
+                            type="button"
+                            className="mdb-btn mdb-btn-ghost"
+                            onClick={handleOpenLocalLibrary}
+                            disabled={!serviceRegistry.libraryService}
+                        >
+                            Library
+                        </button>
+                    </div>
+                    <div className="mdb-formats">MP3 · WAV · FLAC · OGG · ATRAC · SP / LP2 / LP4 / HiMD</div>
+                </section>
 
-                    {flushable && (
-                        <Tooltip title="Commit changes">
-                            <IconButton aria-label="actions" aria-controls="actions-menu" aria-haspopup="true" onClick={handleFlush}>
-                                <DoneIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )}
-
-                    <TopMenu tracksSelected={selected} />
-                </span>
-            </Box>
-            <Typography component="h2" variant="body2">
+                <aside className="mdb-card mdb-device-card">
+                    <h2 className="mdb-h2">Device</h2>
+                    <div className="mdb-device-head">
+                        <div className="mdb-disc" aria-hidden="true" />
+                        <div>
+                            <Typography component="h3" className="mdb-device-name">
+                                {deviceName || `Loading...`}
+                            </Typography>
+                            <div className="mdb-device-meta">NetMD · USB · {disc ? 'Disc loaded' : 'No disc loaded'}</div>
+                        </div>
+                        <span className="mdb-spacer" />
+                        <span className="mdb-device-actions">
+                            {deviceCapabilities.discEject && (
+                                <Tooltip title="Eject disc">
+                                    <IconButton aria-label="eject disc" onClick={handleEject} disabled={!disc}>
+                                        <EjectIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                            {flushable && (
+                                <Tooltip title="Commit changes">
+                                    <IconButton aria-label="commit changes" onClick={handleFlush}>
+                                        <DoneIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </span>
+                    </div>
+                    <div className="mdb-meter-label">
+                        <span>Disc space used</span>
+                        <strong>{disc ? `${usedPercent} %` : '—'}</strong>
+                    </div>
+                    <div className="mdb-device-status">
                 {disc !== null ? (
                     <React.Fragment>
                         <span className={classes.clickableRemainingTime} onClick={() => setShowRemainingSpace((x) => !x)}>
@@ -615,6 +674,7 @@ export const Main = (props: {}) => {
                         </span>
                         <div className={classes.spacing} />
                         <LinearProgress
+                            className="mdb-meter"
                             variant="determinate"
                             color={((disc.total - disc.left) * 100) / disc.total >= 90 ? 'secondary' : 'primary'}
                             value={((disc.total - disc.left) * 100) / disc.total}
@@ -623,7 +683,35 @@ export const Main = (props: {}) => {
                 ) : (
                     `No disc loaded`
                 )}
-            </Typography>
+                    </div>
+                    <div className="mdb-quick">
+                        <button type="button" onClick={handleRenameDisc} disabled={!deviceCapabilities.metadataEdit || !disc}>
+                            <span aria-hidden="true">✎</span> Rename disc
+                        </button>
+                        <button type="button" onClick={() => dispatch(listContent(true))}>
+                            <span aria-hidden="true">↻</span> Reload TOC
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => dispatch(wipeDisc())}
+                            disabled={!deviceCapabilities.metadataEdit || !disc}
+                        >
+                            <span aria-hidden="true">⌫</span> Wipe disc
+                        </button>
+                        <button type="button" onClick={() => dispatch(exportCSV())} disabled={!disc}>
+                            <span aria-hidden="true">⇩</span> Export CSV
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
+            <section className="mdb-card mdb-track-card">
+                <div className="mdb-section-head">
+                    <h2 className="mdb-h2">Queue</h2>
+                    <span className="mdb-pill">
+                        {tracks.length} tracks · {formatTimeFromSeconds(queueDuration)}
+                    </span>
+                </div>
             <Toolbar
                 className={cx(classes.toolbar, {
                     [classes.toolbarHighlight]: selectedCount > 0 || selectedGroupsCount > 0,
@@ -742,7 +830,7 @@ export const Main = (props: {}) => {
             {deviceCapabilities.contentList ? (
                 <Box className={classes.main} {...getRootProps()} id="main">
                     <input {...getInputProps()} />
-                    <Table size="small" className={classes.fixedTable}>
+                    <Table size="small" className={cx(classes.fixedTable, 'mdb-tracklist')}>
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.dragHandleEmpty}></TableCell>
@@ -841,6 +929,7 @@ export const Main = (props: {}) => {
                 </MenuItem>
                 <MenuItem onClick={handleOpenLocalLibrary}>Upload from library</MenuItem>
             </Menu>
+            </section>
 
             <DiscProtectedDialog />
             <UploadDialog />

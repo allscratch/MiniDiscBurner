@@ -18,7 +18,6 @@ import { Delete as DeleteIcon } from '@mui/icons-material'
 import { Add as AddIcon } from '@mui/icons-material'
 import { OpenInNew as OpenInNewIcon } from '@mui/icons-material'
 
-import { TopMenu } from './topmenu';
 import ChromeIconPath from '../images/chrome-icon.svg';
 import { W95Welcome } from './win95/welcome';
 
@@ -204,39 +203,52 @@ export const Welcome = (props: {}) => {
 
     return (
         <React.Fragment>
-            <Box className={classes.headBox}>
-                <Typography component="h1" variant="h4">
-                    MiniDiscBurner
-                </Typography>
-                <TopMenu />
-            </Box>
-            <Typography component="h2" variant="body2">
-                Brings NetMD Devices to the Web
-            </Typography>
-            <Box className={classes.main}>
-                {browserSupported ? (
-                    <React.Fragment>
-                        <div className={classes.connectContainer}>
-                            <Typography component="h2" variant="subtitle1" align="center" className={classes.spacing}>
-                                Press the button to connect to a NetMD device
-                            </Typography>
+            <div className="mdb-hero">
+                <section className="mdb-card mdb-transfer-card">
+                    <div className="mdb-eyebrow">Transfer studio</div>
+                    <Typography component="h1" className="mdb-h1">
+                        Transfer your music
+                        <br />
+                        to your MiniDisc.
+                    </Typography>
+                    <Typography component="p" className="mdb-lead">
+                        Drop your files, choose the format and let MiniDiscBurner do the rest. Your recorder is ready.
+                    </Typography>
 
-                            <SplitButton
-                                options={options}
-                                color="primary"
-                                boxClassName={classes.buttonBox}
-                                width={200}
-                                disabled={doesServiceRequireChrome(availableServices[lastSelectedService]) && !runningChrome}
-                                selectedIndex={lastSelectedService}
-                                dropdownMapping={mapToEntry}
-                                loading={connectingInProgress}
-                            />
-
-                            <FormControl
-                                error={true}
-                                className={classes.spacing}
-                                style={{ visibility: pairingFailed ? 'visible' : 'hidden' }}
+                    {browserSupported ? (
+                        <React.Fragment>
+                            <button
+                                type="button"
+                                className="mdb-drop"
+                                onClick={() => options[lastSelectedService]?.handler()}
+                                disabled={connectingInProgress}
                             >
+                                <div className="mdb-drop-icon" aria-hidden="true">↥</div>
+                                <strong>Connect your recorder</strong>
+                                <small>Select a model and press connect to begin</small>
+                            </button>
+
+                            <div className="mdb-row">
+                                <SplitButton
+                                    options={options}
+                                    color="primary"
+                                    width={200}
+                                    disabled={doesServiceRequireChrome(availableServices[lastSelectedService]) && !runningChrome}
+                                    selectedIndex={lastSelectedService}
+                                    dropdownMapping={mapToEntry}
+                                    loading={connectingInProgress}
+                                />
+                                <Link
+                                    className="mdb-btn mdb-btn-ghost"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    href="https://www.minidisc.wiki/guides/webminidisc"
+                                >
+                                    <span>First time here? Read the guide</span> <OpenInNewIcon fontSize="inherit" />
+                                </Link>
+                            </div>
+
+                            <FormControl error={true} style={{ visibility: pairingFailed ? 'visible' : 'hidden' }}>
                                 <FormHelperText>{pairingMessage}</FormHelperText>
                             </FormControl>
                             {!window.native?.interface && (
@@ -256,67 +268,86 @@ export const Welcome = (props: {}) => {
                                     </Alert>
                                 </Tooltip>
                             )}
-                        </div>
-                        <div>
-                            <Typography component="h2" variant="subtitle1" align="center" className={classes.spacing}>
-                                <Link rel="noopener noreferrer" target="_blank" href="https://www.minidisc.wiki/guides/webminidisc">
-                                    <span style={{ verticalAlign: 'middle' }}>First time here? Read the guide</span>{' '}
-                                    <OpenInNewIcon style={{ verticalAlign: 'middle' }} fontSize="inherit" />
+                            <div className="mdb-formats">MP3 · WAV · FLAC · OGG · ATRAC · SP / LP2 / LP4 / HiMD</div>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <Typography component="h2" variant="subtitle1">
+                                This Web browser is not supported.&nbsp;
+                                <Link rel="noopener noreferrer" href="#" onClick={handleLearnWhy}>
+                                    Learn Why
                                 </Link>
                             </Typography>
-                        </div>
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                        <Typography component="h2" variant="subtitle1" align="center" className={classes.spacing}>
-                            This Web browser is not supported.&nbsp;
-                            <Link rel="noopener noreferrer" href="#" onClick={handleLearnWhy}>
-                                Learn Why
-                            </Link>
-                        </Typography>
 
-                        <Link rel="noopener noreferrer" target="_blank" href="https://www.google.com/chrome/">
-                            <img alt="Chrome Logo" src={ChromeIconPath} className={classes.chromeLogo} />
-                        </Link>
-
-                        <Typography component="h2" variant="subtitle1" align="center" className={classes.spacing}>
-                            Try using{' '}
                             <Link rel="noopener noreferrer" target="_blank" href="https://www.google.com/chrome/">
-                                Chrome
-                            </Link>{' '}
-                            instead
-                        </Typography>
+                                <img alt="Chrome Logo" src={ChromeIconPath} className={classes.chromeLogo} />
+                            </Link>
 
-                        <Typography component="p" variant="subtitle1" align="center" className={classes.spacing}>
-                            If you want to connect to a remote device, click{' '}
-                            <Link rel="noopener noreferrer" href="#" onClick={forceContinue}>
-                                here
-                            </Link>{' '}
-                            to load the app anyway.
-                        </Typography>
+                            <Typography component="h2" variant="subtitle1">
+                                Try using{' '}
+                                <Link rel="noopener noreferrer" target="_blank" href="https://www.google.com/chrome/">
+                                    Chrome
+                                </Link>{' '}
+                                instead
+                            </Typography>
 
-                        {showWhyUnsupported ? (
-                            <>
-                                <Typography component="p" variant="body2" className={classes.why}>
-                                    MiniDiscBurner requires a browser that supports both{' '}
-                                    <Link rel="noopener noreferrer" target="_blank" href="https://wicg.github.io/webusb/">
-                                        WebUSB
-                                    </Link>{' '}
-                                    and{' '}
-                                    <Link rel="noopener noreferrer" target="_blank" href="https://webassembly.org/">
-                                        WebAssembly
-                                    </Link>
-                                    .
-                                </Typography>
-                                <ul>
-                                    <li>WebUSB is needed to control the NetMD device via the USB connection to your computer.</li>
-                                    <li>WebAssembly is used to convert the music to a MiniDisc compatible format</li>
-                                </ul>
-                            </>
-                        ) : null}
-                    </React.Fragment>
-                )}
-            </Box>
+                            <Typography component="p" variant="subtitle1">
+                                If you want to connect to a remote device, click{' '}
+                                <Link rel="noopener noreferrer" href="#" onClick={forceContinue}>
+                                    here
+                                </Link>{' '}
+                                to load the app anyway.
+                            </Typography>
+
+                            {showWhyUnsupported ? (
+                                <>
+                                    <Typography component="p" variant="body2" className={classes.why}>
+                                        MiniDiscBurner requires a browser that supports both{' '}
+                                        <Link rel="noopener noreferrer" target="_blank" href="https://wicg.github.io/webusb/">
+                                            WebUSB
+                                        </Link>{' '}
+                                        and{' '}
+                                        <Link rel="noopener noreferrer" target="_blank" href="https://webassembly.org/">
+                                            WebAssembly
+                                        </Link>
+                                        .
+                                    </Typography>
+                                    <ul>
+                                        <li>WebUSB is needed to control the NetMD device via the USB connection to your computer.</li>
+                                        <li>WebAssembly is used to convert the music to a MiniDisc compatible format</li>
+                                    </ul>
+                                </>
+                            ) : null}
+                        </React.Fragment>
+                    )}
+                </section>
+
+                <aside className="mdb-card mdb-device-card">
+                    <h2 className="mdb-h2">Device</h2>
+                    <div className="mdb-device-head">
+                        <div className="mdb-disc" aria-hidden="true" />
+                        <div>
+                            <div className="mdb-device-name">NetMD recorder</div>
+                            <div className="mdb-device-meta">WebUSB · Chromium / Edge</div>
+                        </div>
+                    </div>
+                    <div className="mdb-meter-label">
+                        <span>No device connected</span>
+                        <strong>—</strong>
+                    </div>
+                    <div className="mdb-meter"><i /></div>
+                    <div className="mdb-meter-label">
+                        <span>Ready to connect</span>
+                        <span>NetMD</span>
+                    </div>
+                    <div className="mdb-quick">
+                        <button type="button" disabled><span aria-hidden="true">✎</span> Rename disc</button>
+                        <button type="button" disabled><span aria-hidden="true">↻</span> Reload TOC</button>
+                        <button type="button" disabled><span aria-hidden="true">⌫</span> Wipe disc</button>
+                        <button type="button" disabled><span aria-hidden="true">⇩</span> Export CSV</button>
+                    </div>
+                </aside>
+            </div>
             <SettingsDialog />
             <ManageEncodersDialog />
             <AboutDialog />

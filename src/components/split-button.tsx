@@ -68,9 +68,9 @@ export default function SplitButton(props: SplitButtonProps) {
                     aria-label="select merge strategy"
                     aria-haspopup="menu"
                     onClick={handleToggle}
-                    style={{ minWidth: width ? width * 0.2 : undefined, background: '#e0e0e0' }}
+                    style={{ minWidth: width ? width * 0.2 : undefined }}
                 >
-                    <ArrowDropDownIcon htmlColor="#000" />
+                    <ArrowDropDownIcon />
                 </Button>
             </ButtonGroup>
             <Popper
