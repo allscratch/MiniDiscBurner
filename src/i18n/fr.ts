@@ -60,6 +60,8 @@ export const FR: Record<string, string> = {
   "Please switch to a different Chromium-based browser.": "Veuillez utiliser un autre navigateur basé sur Chromium.",
   "Notice for users of the Vivaldi web browser": "Avis aux utilisateurs du navigateur Vivaldi",
   "First time here? Read the guide": "C’est votre première visite ? Consultez le guide",
+  "Support and FAQ": "Aide et FAQ",
+  "Donate": "Faire un don",
   "This Web browser is not supported.": "Ce navigateur Web n’est pas pris en charge.",
   "This Web browser is not supported.\u00a0": "Ce navigateur Web n’est pas pris en charge. ",
   "Learn Why": "Pourquoi ?",

@@ -12,81 +12,81 @@ export const CHANGELOG: ChangelogVersion[] = [
     {
         name: "Version 1.6.2",
         contents: [
-            "Fix race condition in encoder setup",
-            "Better support for Network Walkmans",
-            "Default to slower ATRAC export exploit on MacOS machines",
+            "Correction d’une condition de concurrence lors de la configuration de l’encodeur",
+            "Meilleure prise en charge des Walkmans réseau",
+            "Utilisation par défaut de l’exploit d’export ATRAC plus lent sur les machines MacOS",
         ],
     },
     {
         name: "Version 1.6.1",
         contents: [
-            "Fixed SP encoders",
+            "Correction des encodeurs SP",
         ],
     },
     {
         name: "Version 1.6.0",
         contents: [
-            "Completely split off encoders from the main application, allow for custom encoders to be installed by end users.",
-            "Various small bugfixes",
+            "Séparation complète des encodeurs de l’application principale, permettant aux utilisateurs d’installer leurs propres encodeurs.",
+            "Diverses corrections de bugs mineures",
         ],
     },
     {
         name: "Version 1.5.4",
         contents: [
-            "Fixed HiMD seeking back-and-forth every time a track is uploaded",
-            "Fixed deleting grouped tracks in HiMD",
+            "Correction des allers-retours de recherche sur HiMD à chaque téléversement d’une piste",
+            "Correction de la suppression des pistes groupées en HiMD",
         ],
     },
     {
         name: "Version 1.5.3",
         contents: [
-            "Added the ability to see used time / bytes on the current disc",
-            "Fixed HiMD workers",
-            "Fixed incorrect extension being applied to ripped files",
+            "Ajout de la possibilité de voir le temps / les octets utilisés sur le disque actuel",
+            "Correction des workers HiMD",
+            "Correction de l’extension incorrecte appliquée aux fichiers extraits",
         ],
     },
     {
         name: "Version 1.5.2",
         contents: [
-            "Added the ability to format MDs to HiMD on supported devices",
-            "Fixed song recognition",
-            "Fixed issues with codec recognition",
+            "Ajout de la possibilité de formater des MD en HiMD sur les appareils pris en charge",
+            "Correction de la reconnaissance de morceaux",
+            "Correction des problèmes de reconnaissance des codecs",
         ],
     },
     {
         name: "Version 1.5.1",
         contents: [
-            "Switched to byte-based storage space calculations in HiMD",
-            "Updated HiMD support libraries",
-            "Fixed some stability issues related to the remote encoder",
-            "Fixed some issues regarding track recognition",
-            "Fixed full-width title support",
+            "Passage à des calculs d’espace de stockage en octets pour HiMD",
+            "Mise à jour des bibliothèques de prise en charge HiMD",
+            "Correction de quelques problèmes de stabilité liés à l’encodeur distant",
+            "Correction de quelques problèmes de reconnaissance des pistes",
+            "Correction de la prise en charge des titres pleine largeur",
         ]
     },
     {
         name: "Version 1.5.0",
         contents: [
-            "Overhauled UI - updated all outdated dependencies",
-            ["I now have a ", { type: 'link', url: 'https://ko-fi.com/asivery', content: "Ko-Fi" }, " - if you're enjoying this software, please send me a tip :)"],
-            "Unlocked mono upload for some non-exploitable devices (Sony decks and some Panasonic portables)",
-            "Added a device name field in homebrew mode",
-            "Added unrecoverable error handling",
-            "Added support for remote libraries",
+            "Refonte de l’interface - mise à jour de toutes les dépendances obsolètes",
+            ["J’ai désormais un ", { type: 'link', url: 'https://ko-fi.com/asivery', content: "Ko-Fi" }, " - si vous aimez ce logiciel, n’hésitez pas à me laisser un pourboire :)"],
+            "Déblocage du téléversement mono sur certains appareils non exploitables (platines Sony et quelques lecteurs portables Panasonic)",
+            "Ajout d’un champ de nom d’appareil en mode homebrew",
+            "Ajout de la gestion des erreurs irrécupérables",
+            "Ajout de la prise en charge des bibliothèques distantes",
             {
                 type: 'sublist',
-                name: "Updated to himd-js 0.2.0",
+                name: "Mise à jour vers himd-js 0.2.0",
                 content: [
-                    ["Switched from ", { type: 'code', content: "fatfs" }, " to ", { type: 'code', content: "nufatfs" }],
-                    "Added support for track deletion in HiMD mode"
+                    ["Passage de ", { type: 'code', content: "fatfs" }, " à ", { type: 'code', content: "nufatfs" }],
+                    "Ajout de la prise en charge de la suppression de pistes en mode HiMD"
                 ]
             },
             {
                 type: 'sublist',
-                name: "Updated to netmd-exploits 0.5.8",
-                content: ["Increased RH1 exploits compatibility"]
+                name: "Mise à jour vers netmd-exploits 0.5.8",
+                content: ["Amélioration de la compatibilité des exploits RH1"]
             },
-            "Fixed UI inconsistencies",
-            "Fixed numerous bugs regarding communication with Sharp and some Sony devices"
+            "Correction des incohérences de l’interface",
+            "Correction de nombreux bugs concernant la communication avec Sharp et certains appareils Sony"
         ]
     },
     {
@@ -94,16 +94,16 @@ export const CHANGELOG: ChangelogVersion[] = [
         contents: [
             {
                 type: 'sublist',
-                name: "Updated to netmd-exploits 0.5.4",
-                content: ["Added support for SP MONO upload"]
+                name: "Mise à jour vers netmd-exploits 0.5.4",
+                content: ["Ajout de la prise en charge du téléversement SP MONO"]
             },
             {
                 type: 'sublist',
-                name: "Updated to himd-js 0.1.10",
-                content: ["Added support for HiMD disc wiping"]
+                name: "Mise à jour vers himd-js 0.1.10",
+                content: ["Ajout de la prise en charge de l’effacement des disques HiMD"]
             },
-            "Added a disc-protected warning window",
-            "Added a shortcut to SP Speedup in Homebrew Shortcuts menu"
+            "Ajout d’une fenêtre d’avertissement pour les disques protégés",
+            "Ajout d’un raccourci vers l’accélération SP dans le menu Raccourcis homebrew"
         ]
     },
     {
@@ -111,14 +111,14 @@ export const CHANGELOG: ChangelogVersion[] = [
         contents: [
             {
                 type: 'sublist',
-                name: "Updated to netmd-exploits 0.5.3",
+                name: "Mise à jour vers netmd-exploits 0.5.3",
                 content: [
-                    "Added support for Full HiMD mode for Hn1.10A and Hn1.000",
-                    "Added support for ATRAC download for Hn1.10A and Hn1.000"
+                    "Ajout de la prise en charge du mode HiMD complet pour Hn1.10A et Hn1.000",
+                    "Ajout de la prise en charge du téléchargement ATRAC pour Hn1.10A et Hn1.000"
                 ]
             },
-            "Added support for uploading MKA files",
-            "Fixed MP3 files uploaded to HiMD always being 128kbps"
+            "Ajout de la prise en charge du téléversement des fichiers MKA",
+            "Correction des fichiers MP3 téléversés vers HiMD toujours à 128kbps"
         ]
     },
     {
@@ -126,52 +126,52 @@ export const CHANGELOG: ChangelogVersion[] = [
         contents: [
             {
                 type: 'sublist',
-                name: "Added full HiMD support",
+                name: "Ajout de la prise en charge complète de HiMD",
                 content: [
-                    "Added support for HiMD metadata editing",
-                    "Added support for HiMD ATRAC3 / ATRAC3+ / LPCM / MP3 download",
-                    "Added support for HiMD MP3 upload"
+                    "Ajout de la prise en charge de la modification des métadonnées HiMD",
+                    "Ajout de la prise en charge du téléchargement HiMD ATRAC3 / ATRAC3+ / LPCM / MP3",
+                    "Ajout de la prise en charge du téléversement MP3 en HiMD"
                 ]
             },
             {
                 type: 'sublist',
-                name: "Updated to netmd-exploits 0.5.1",
+                name: "Mise à jour vers netmd-exploits 0.5.1",
                 content: [
-                    "Added the ability to download ATRAC data from standard MDs using HiMD portables",
-                    "Added the ability to upload AEA files back to MDs on supported devices",
-                    "Fixed Tetris on normal Sony portables",
-                    "(Hopefully) Fixed the L/R channel mismatch bug"
+                    "Ajout de la possibilité de télécharger des données ATRAC depuis des MD standard à l’aide de lecteurs portables HiMD",
+                    "Ajout de la possibilité de téléverser des fichiers AEA vers les MD sur les appareils pris en charge",
+                    "Correction de Tetris sur les lecteurs portables Sony classiques",
+                    "(Espérons-le) Correction du bug d’inversion des canaux L/R"
                 ]
             },
-            "Added homebrew mode shortcuts in the main UI",
-            "Added progress indicator in tab title for uploading",
-            "Added an option to archive discs as ZIPs",
-            "Added an option to auto-convert ripped tracks to WAV",
-            "Added an option to strip TrProtect from all files via the homebrew mode",
-            "Added CSV export as part of the archive disc command",
-            "Added full width title to the upload progress dialog",
-            "Added a warning for when an incomplete encoder is used",
-            "Added an option to rename tracks in the song recognition dialog",
-            "Merged all settings into one dialog",
-            "Fixed timestamps table in homebrew mode",
-            "Fixed CSV export missing the first group if all tracks are grouped",
-            "Fixed disc title editing being available even if disc was write protected",
-            "Fixed incorrect order when uploading pre-encoded LP2 and LP4 tracks",
-            "Fixed original title of a song not displaying in the song recognition dialog, if it was sanitized away"
+            "Ajout des raccourcis du mode homebrew dans l’interface principale",
+            "Ajout d’un indicateur de progression dans le titre de l’onglet pendant le téléversement",
+            "Ajout d’une option pour archiver les disques au format ZIP",
+            "Ajout d’une option pour convertir automatiquement les pistes extraites en WAV",
+            "Ajout d’une option pour supprimer TrProtect de tous les fichiers via le mode homebrew",
+            "Ajout de l’export CSV à la commande d’archivage du disque",
+            "Ajout du titre pleine largeur à la boîte de dialogue de progression du téléversement",
+            "Ajout d’un avertissement lorsqu’un encodeur incomplet est utilisé",
+            "Ajout d’une option pour renommer les pistes dans la boîte de dialogue de reconnaissance de morceaux",
+            "Regroupement de tous les paramètres dans une seule boîte de dialogue",
+            "Correction du tableau des horodatages en mode homebrew",
+            "Correction de l’export CSV qui omettait le premier groupe si toutes les pistes sont groupées",
+            "Correction de la modification du titre du disque qui restait possible même si le disque était protégé en écriture",
+            "Correction de l’ordre incorrect lors du téléversement de pistes LP2 et LP4 préencodées",
+            "Correction de l’absence du titre d’origine d’un morceau dans la boîte de dialogue de reconnaissance, lorsqu’il avait été nettoyé"
         ]
     },
     {
         name: "Version 1.3.2",
         contents: [
-            "Reverted version 1.3.1",
-            "Made Type-R ripping a lot more stable, removed Type-R warnings, re-enabled exploit-based song recognition for Type-R devices",
+            "Annulation de la version 1.3.1",
+            "Extraction Type-R nettement plus stable, suppression des avertissements Type-R et réactivation de la reconnaissance de morceaux basée sur les exploits pour les appareils Type-R",
             [
-                "Fixed external encoders requiring root path in URL (Issue ", 
+                "Correction des encodeurs externes exigeant le chemin racine dans l’URL (ticket ",
                 { type: 'link', url: "https://github.com/asivery/webminidisc/issues/11", content: "#11" },
                 ")"
             ],
             [
-                "Fixed stripping SCMS information (Issue ",
+                "Correction de la suppression des informations SCMS (ticket ",
                 { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/110", content: "#110" },
                 ")"
             ]
@@ -180,57 +180,57 @@ export const CHANGELOG: ChangelogVersion[] = [
     {
         name: "Version 1.3.1",
         contents: [
-            "Disabled EEPROM writing routines when entering the homebrew mode for Type-R units",
-            "[Temporary] Disabled exploits-based track recognition for Type-R units"
+            "Désactivation des routines d’écriture EEPROM lors de l’entrée en mode homebrew sur les appareils Type-R",
+            "[Temporaire] Désactivation de la reconnaissance de pistes basée sur les exploits pour les appareils Type-R"
         ]
     },
     {
         name: "Version 1.3.0",
         contents: [
-            "Renamed 'Factory Mode' to 'Homebrew Mode'",
-            "Added track normalization",
+            "Renommage du « mode usine » en « mode homebrew »",
+            "Ajout de la normalisation des pistes",
             [
-                "Added the ability to use a ",
-                { type: 'link', clickHandler: 'openSettings', content: "high quality LP encoder" }
+                "Ajout de la possibilité d’utiliser un ",
+                { type: 'link', clickHandler: 'openSettings', content: "encodeur LP haute qualité" }
             ],
-            "Added song recognition",
-            "Added CSV track list import and export",
-            "Added support for ReplayGain",
-            "Added remaining time display in the convert dialog",
-            "Added the ability to export and import track lists from discs to CSV files",
-            "Fixed line-in track recording",
+            "Ajout de la reconnaissance de morceaux",
+            "Ajout de l’importation et de l’exportation des listes de pistes CSV",
+            "Ajout de la prise en charge de ReplayGain",
+            "Ajout de l’affichage du temps restant dans la boîte de dialogue de conversion",
+            "Ajout de la possibilité d’exporter et d’importer les listes de pistes des disques vers des fichiers CSV",
+            "Correction de l’enregistrement des pistes depuis l’entrée ligne",
             {
                 type: 'sublist',
-                name: "Updated to netmd-exploits 0.4.0",
+                name: "Mise à jour vers netmd-exploits 0.4.0",
                 content: [
-                    "Added bulk ATRAC transfer via USB (Speedup from ~1.1x SP transfer to ~3x SP transfer)",
-                    "Added support for IRQ-based ATRAC transfer for Type-R devices",
-                    "Added support for direct TOC editing and cloning for Type-R devices",
+                    "Ajout du transfert ATRAC en lot via USB (accélération du transfert SP d’environ 1,1x à environ 3x)",
+                    "Ajout de la prise en charge du transfert ATRAC basé sur IRQ pour les appareils Type-R",
+                    "Ajout de la prise en charge de la modification et du clonage directs de la TOC pour les appareils Type-R",
                     [
-                        "Disabled tetris because of a suspected bug (If you tried running tetris, and can no longer upload tracks, please contact me)"
+                        "Désactivation de Tetris en raison d’un bug suspecté (si vous avez essayé de lancer Tetris et ne pouvez plus téléverser de pistes, veuillez me contacter)"
                     ],
-                    "Added the ability to force a 2x speed device to record SP in 4x"
+                    "Ajout de la possibilité de forcer un appareil 2x à enregistrer en SP à 4x"
                 ]
             },
             {
                 type: 'sublist',
-                name: "Updated to netmd-js 4.1.0",
-                content: ["Sped up encryption"]
+                name: "Mise à jour vers netmd-js 4.1.0",
+                content: ["Accélération du chiffrement"]
             }
         ]
     },
     {
         name: "Version 1.2.2",
         contents: [
-            "Added a button to enable ATRAC ripping in the main UI.",
-            "ATRAC ripping bugfixes and better compatibility."
+            "Ajout d’un bouton pour activer l’extraction ATRAC dans l’interface principale.",
+            "Corrections de bugs de l’extraction ATRAC et meilleure compatibilité."
         ]
     },
     {
         name: "Version 1.2.1",
         contents: [
-            "Labelled the factory mode better",
-            "Fixed a bug in ATRAC autodetection"
+            "Meilleure dénomination du mode usine",
+            "Correction d’un bug dans la détection automatique ATRAC"
         ]
     },
     {
@@ -238,67 +238,67 @@ export const CHANGELOG: ChangelogVersion[] = [
         contents: [
             {
                 type: 'sublist',
-                name: "Added factory mode support for Sony portables. It's available from the ellipsis menu",
+                name: "Ajout de la prise en charge du mode usine pour les lecteurs portables Sony. Il est accessible depuis le menu des points de suspension",
                 content: [
-                    "Added the ability to transfer music from NetMD to PC via USB",
-                    "Added the ability to edit the ToC byte-by-byte",
-                    "Added the ability to download and upload the ToC",
-                    "Added the ability to dump the devices' RAM and ROM",
-                    "Added the ability to load and play Tetris (thanks Sir68k!)"
+                    "Ajout de la possibilité de transférer de la musique de NetMD vers le PC via USB",
+                    "Ajout de la possibilité de modifier la ToC octet par octet",
+                    "Ajout de la possibilité de télécharger et de téléverser la ToC",
+                    "Ajout de la possibilité d’extraire la RAM et la ROM des appareils",
+                    "Ajout de la possibilité de charger et de jouer à Tetris (merci Sir68k !)"
                 ]
             },
-            "Added ATRAC3 autodetection (for both WAVs and OMAs)",
-            "Added better support for bookshelf systems",
-            "Fixed incorrect title limits",
-            "Fixed the title corruption bug"
+            "Ajout de la détection automatique ATRAC3 (pour les WAV et les OMA)",
+            "Meilleure prise en charge des chaînes hi-fi",
+            "Correction des limites de longueur des titres",
+            "Correction du bug de corruption des titres"
         ]
     },
     {
         name: "Version 1.1.1",
         contents: [
-            "Prevented entering sleep mode when uploading tracks",
-            "Fixed some small bugs"
+            "Prévention de la mise en veille pendant le téléversement des pistes",
+            "Correction de quelques petits bugs"
         ]
     },
     {
         name: "Version 1.1.0",
         contents: [
-            "Added better support for Kenwood NetMD devices",
-            "Added the ability to eject and change the disc",
-            "Fixed some bugs regarding upload stalling"
+            "Meilleure prise en charge des appareils Kenwood NetMD",
+            "Ajout de la possibilité d’éjecter et de changer le disque",
+            "Correction de quelques bugs de blocage du téléversement"
         ]
     },
     {
         name: "Version 0.3.0",
         contents: [
             [
-                "Added support for ",
-                { type: 'link', url: "https://github.com/asivery/remote-netmd-server", content: "Remote NetMD" }
+                "Ajout de la prise en charge de ",
+                { type: 'link', url: "https://github.com/asivery/remote-netmd-server", content: "NetMD distant" }
             ],
-            "Fixed numerous bugs regarding NetMD upload and Sony LAMs",
-            "Added support for downloading tracks via NetMD from the Sony MZ-RH1 recorder",
-            "Numerous programming changes"
+            "Correction de nombreux bugs concernant le téléversement NetMD et les LAM Sony",
+            "Ajout de la prise en charge du téléchargement des pistes via NetMD depuis l’enregistreur Sony MZ-RH1",
+            "Nombreuses modifications de programmation"
         ]
     },
     {
         name: "Version 0.2.4",
         contents: [
-            "Added the changelog dialog",
-            "Added a basic self-test",
+            "Ajout de la boîte de dialogue du journal des modifications",
+            "Ajout d’un auto-test de base",
             [
-                "Added full support for Sony LAM-Series devices (Issue ", 
-                { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/29", content: "#29" }, 
-                ", ", 
+                "Ajout de la prise en charge complète des appareils Sony de la série LAM (ticket ",
+                { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/29", content: "#29" },
+                ", ",
                 { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/60", content: "#60" },
                 ")"
             ],
             {
                 type: 'sublist',
-                name: 'Overhauled the convert dialog',
+                name: 'Refonte de la boîte de dialogue de conversion',
                 content: [
-                    "Added the ability to rename tracks before sending them to the recorder",
-                    "Added a live preview of how the tracks are going to be titled when selecting different formats",
-                    ["Added a warning about using too many characters (Issue ", { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/66", content: "#66"}, ")"]
+                    "Ajout de la possibilité de renommer les pistes avant de les envoyer à l’enregistreur",
+                    "Ajout d’un aperçu en direct des titres des pistes selon le format sélectionné",
+                    ["Ajout d’un avertissement lors de l’utilisation d’un trop grand nombre de caractères (ticket ", { type: 'link', url: "https://github.com/cybercase/webminidisc/issues/66", content: "#66"}, ")"]
                 ]
             }
         ]
