@@ -375,6 +375,10 @@
     font-size: 12px;
 }
 
+.mdb-shell .mdb-device-meta + .mdb-device-meta {
+    margin-top: 2px;
+}
+
 .mdb-shell .mdb-meter.MuiLinearProgress-root {
     height: 7px;
     border-radius: 99px;

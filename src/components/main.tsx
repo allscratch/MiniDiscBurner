@@ -560,6 +560,27 @@ export const Main = (props: {}) => {
     const usedPercent = disc && disc.total > 0 ? Math.round(((disc.total - disc.left) * 100) / disc.total) : 0;
     const queueDuration = tracks.reduce((total, track) => total + track.duration, 0);
 
+    // La marque/modèle viennent de la table VID/PID de netmd-js (deviceName).
+    const knownBrands = ['Sony', 'Sharp', 'Aiwa', 'Panasonic', 'JVC', 'Philips', 'Kenwood', 'Victor', 'Tascam', 'Pioneer'];
+    const nameParts = deviceName.trim().split(/\s+/);
+    const brand = knownBrands.find((item) => item.toLowerCase() === nameParts[0]?.toLowerCase()) || '';
+    const model = brand ? nameParts.slice(1).join(' ') : deviceName;
+
+    // Le protocole ne donne pas de classe de disque (60/74/80) : on la déduit
+    // de la capacité totale en secondes équivalent SP et on l'annonce comme
+    // approximative. Les disques HiMD annoncent des octets : on les affiche tels quels.
+    const usesTimeCapacity = minidiscSpec?.measurementUnits === 'frames';
+    const capacityMinutes = usesTimeCapacity && disc ? Math.round(disc.total / 60) : 0;
+    const nominalCapacity = [60, 74, 80].reduce(
+        (closest, value) => (Math.abs(value - capacityMinutes) < Math.abs(closest - capacityMinutes) ? value : closest),
+        80
+    );
+    const capacityLabel = !disc
+        ? 'Insert a disc to read its capacity'
+        : usesTimeCapacity
+        ? `≈ ${nominalCapacity} min (SP) · ${nominalCapacity * 2} min (LP2) · ${nominalCapacity * 4} min (LP4)`
+        : bytesToHumanReadable(disc.total);
+
     return (
         <React.Fragment>
             <div className="mdb-hero">
@@ -612,7 +633,12 @@ export const Main = (props: {}) => {
                             <Typography component="h3" className="mdb-device-name">
                                 {deviceName || `Loading...`}
                             </Typography>
-                            <div className="mdb-device-meta">NetMD · USB · {disc ? 'Disc loaded' : 'No disc loaded'}</div>
+                            <div className="mdb-device-meta">
+                                <span>Brand</span>: {brand || '—'} · <span>Model</span>: {model || '—'}
+                            </div>
+                            <div className="mdb-device-meta">
+                                NetMD · USB · {disc ? 'Disc loaded' : 'No disc loaded'}
+                            </div>
                         </div>
                         <span className="mdb-spacer" />
                         <span className="mdb-device-actions">
@@ -684,6 +710,12 @@ export const Main = (props: {}) => {
                     `No disc loaded`
                 )}
                     </div>
+                    <div className="mdb-device-meta">{capacityLabel}</div>
+                    {disc ? (
+                        <div className="mdb-device-meta">
+                            {disc.writeProtected ? 'Write protected disc' : 'Writable disc'}
+                        </div>
+                    ) : null}
                     <div className="mdb-quick">
                         <button type="button" onClick={handleRenameDisc} disabled={!deviceCapabilities.metadataEdit || !disc}>
                             <span aria-hidden="true">✎</span> Rename disc
