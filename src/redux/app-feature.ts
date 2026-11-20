@@ -49,7 +49,7 @@ export const buildInitialState = (): AppState => {
         browserSupported: true,
         runningChrome: true,
         connectingInProgress: false,
-        colorTheme: loadPreference('colorTheme', 'system'),
+        colorTheme: loadPreference('colorTheme', 'dark'),
         vintageMode: loadPreference('vintageMode', false),
         changelogDialogVisible: false,
         aboutDialogVisible: false,

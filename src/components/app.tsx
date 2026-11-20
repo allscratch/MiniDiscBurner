@@ -94,15 +94,33 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const themeCommons = {
+    shape: { borderRadius: 14 },
+    typography: {
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        button: {
+            textTransform: 'none',
+            fontWeight: 600,
+        },
+    },
     components: {
         MuiSelect: {
-            defaultProps: { variant: 'standard' },
+            defaultProps: { variant: 'standard' as const },
         },
         MuiPaper: {
             defaultProps: { elevation: 1 },
             styleOverrides: {
+                root: {
+                    borderRadius: 16,
+                },
                 elevation24: {
                     backgroundImage: 'none !important',
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 10,
                 },
             },
         },
@@ -112,6 +130,11 @@ const themeCommons = {
                     elevation: 0,
                 },
             },
+            styleOverrides: {
+                paper: {
+                    borderRadius: 16,
+                },
+            },
         },
         MuiMenu: {
             defaultProps: {
@@ -119,55 +142,80 @@ const themeCommons = {
                     elevation: 24,
                 },
             },
+            styleOverrides: {
+                paper: {
+                    borderRadius: 12,
+                },
+            },
         },
         MuiTextField: {
-            defaultProps: { variant: 'standard' },
+            defaultProps: { variant: 'standard' as const },
         },
     },
-} as const;
+};
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            light: '#ffb74d',
-            main: '#ff9800',
-            dark: '#e65100',
-            contrastText: '#1a1a1a',
+            light: '#8ec7ff',
+            main: '#5aa9ff',
+            dark: '#2f6fc4',
+            contrastText: '#06121f',
         },
         secondary: {
             light: '#ff8a80',
             main: '#ff5252',
             dark: '#c62828',
         },
+        text: {
+            primary: '#eef1f5',
+            secondary: '#9aa5b4',
+            disabled: 'rgba(238, 241, 245, 0.4)',
+        },
+        divider: '#2a313d',
         background: {
-            default: '#303030',
-            paper: '#424242',
+            default: '#0a0e16',
+            paper: '#141a22',
         },
         action: {
             active: '#fff',
             hover: 'rgba(255, 255, 255, 0.08)',
             hoverOpacity: 0.08,
-            selected: 'rgba(255, 255, 255, 0.16)',
+            selected: 'rgba(90, 169, 255, 0.16)',
             selectedOpacity: 0.16,
             disabled: 'rgba(255, 255, 255, 0.3)',
             disabledBackground: 'rgba(255, 255, 255, 0.12)',
             disabledOpacity: 0.38,
-            focus: 'rgba(255, 255, 255, 0.12)',
-            focusOpacity: 0.12,
+            focus: 'rgba(90, 169, 255, 0.18)',
+            focusOpacity: 0.18,
             activatedOpacity: 0.24,
         },
     },
     ...themeCommons,
+    components: {
+        ...themeCommons.components,
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    background:
+                        'radial-gradient(900px 500px at 12% -10%, rgba(90, 169, 255, 0.12), transparent 60%),' +
+                        'radial-gradient(700px 400px at 100% 0%, rgba(140, 110, 255, 0.07), transparent 55%),' +
+                        '#0a0e16',
+                    backgroundAttachment: 'fixed',
+                },
+            },
+        },
+    },
 });
 
 const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            light: '#ffb74d',
-            main: '#f57c00',
-            dark: '#e65100',
+            light: '#8ec7ff',
+            main: '#1e7ad1',
+            dark: '#0d4f8f',
             contrastText: '#fff',
         },
         secondary: {
@@ -205,25 +253,39 @@ const lightTheme = createTheme({
             secondary: 'rgba(0, 0, 0, 0.54)',
             disabled: 'rgba(0, 0, 0, 0.38)',
         },
+        divider: '#dbe4ef',
         background: {
             paper: '#fff',
-            default: '#fafafa',
+            default: '#f4f7fb',
         },
         action: {
             active: 'rgba(0, 0, 0, 0.54)',
-            hover: 'rgba(0, 0, 0, 0.04)',
-            hoverOpacity: 0.04,
-            selected: 'rgba(0, 0, 0, 0.08)',
-            selectedOpacity: 0.08,
+            hover: 'rgba(30, 122, 209, 0.06)',
+            hoverOpacity: 0.06,
+            selected: 'rgba(30, 122, 209, 0.12)',
+            selectedOpacity: 0.12,
             disabled: 'rgba(0, 0, 0, 0.26)',
             disabledBackground: 'rgba(0, 0, 0, 0.12)',
             disabledOpacity: 0.38,
-            focus: 'rgba(0, 0, 0, 0.12)',
-            focusOpacity: 0.12,
+            focus: 'rgba(30, 122, 209, 0.14)',
+            focusOpacity: 0.14,
             activatedOpacity: 0.12,
         },
     },
     ...themeCommons,
+    components: {
+        ...themeCommons.components,
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    background:
+                        'radial-gradient(900px 500px at 12% -10%, rgba(90, 169, 255, 0.10), transparent 60%),' +
+                        '#f4f7fb',
+                    backgroundAttachment: 'fixed',
+                },
+            },
+        },
+    },
 });
 
 const InternalApp = () => {
