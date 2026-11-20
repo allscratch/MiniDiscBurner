@@ -176,8 +176,10 @@ export const FR: Record<string, string> = {
   // Boîtes de dialogue de transfert
   "Recording...": "Enregistrement...",
   "Conversion completed": "Conversion terminée",
+  "SP / Mono recording is slow: allow about twice the audio length. Keep this window open until the lower bar reaches 100%.": "L’enregistrement SP / Mono est lent : prévoyez environ deux fois la durée de l’audio. Laissez cette fenêtre ouverte jusqu’à 100 % de la barre du bas.",
   "Stopping after current track...": "Arrêt après la piste en cours...",
   "Cancel Recording": "Annuler l’enregistrement",
+  "Recording failed: ${error}": "Échec de l’enregistrement : ${error}",
   "Notify when completed": "Notifier à la fin",
   "Installing encoders...": "Installation des encodeurs...",
   "Download Selected Tracks": "Télécharger les pistes sélectionnées",

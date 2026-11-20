@@ -1419,6 +1419,19 @@ export function convertAndUpload(
 
         console.log(await netmdService?.getDeviceStatus());
 
+        const usesSlowUpload =
+            format.codec === 'PCM' ||
+            format.codec === 'SPS' ||
+            format.codec === 'SPM' ||
+            files.some((file) => file.forcedEncoding?.codec === 'SPS' || file.forcedEncoding?.codec === 'SPM');
+        dispatch(
+            uploadDialogActions.setUploadHint(
+                usesSlowUpload
+                    ? 'SP / Mono recording is slow: allow about twice the audio length. Keep this window open until the lower bar reaches 100%.'
+                    : null
+            )
+        );
+
         let screenWakeLock: any = null;
         if ('wakeLock' in navigator) {
             try {
@@ -1433,11 +1446,13 @@ export function convertAndUpload(
             batchActions([
                 uploadDialogActions.setVisible(true),
                 uploadDialogActions.setCancelUpload(false),
+                uploadDialogActions.setUploadHint(null),
                 uploadDialogActions.setWriteProgress({ written: 0, encrypted: 0, total: 1 }),
             ])
         );
 
         let lastUploadProgress = new Date().getTime(),
+            lastUploadLog = lastUploadProgress,
             lastConvertProgress = lastUploadProgress;
         const originalTitle = document.title;
         let totalBytesAllTracks = 0,
@@ -1451,6 +1466,12 @@ export function convertAndUpload(
                 queueMicrotask(() => dispatch(uploadDialogActions.setWriteProgress({ written, encrypted, total })));
                 lastUploadProgress = now;
                 bytesSentFromThisTrack = written;
+                if (now - lastUploadLog > 5000) {
+                    console.log(
+                        `[MiniDiscBurner] Upload progress: ${(written / 1048576).toFixed(1)} / ${(total / 1048576).toFixed(1)} MiB`
+                    );
+                    lastUploadLog = now;
+                }
                 updateTitle();
             }
         };
@@ -1626,7 +1647,9 @@ export function convertAndUpload(
         let error: any;
         let errorMessage = ``;
         let i = 1;
+        console.log('[MiniDiscBurner] Upload: preparing secure session');
         await netmdService?.prepareUpload();
+        console.log('[MiniDiscBurner] Upload: secure session ready');
 
         for await (const item of conversionIterator(files)) {
             if (hasUploadBeenCancelled()) {
@@ -1661,7 +1684,12 @@ export function convertAndUpload(
             bytesSentFromPrevTracks += bytesSentFromThisTrack;
             bytesSentFromThisTrack = 0;
             overallTrackStatsChanged();
-            updateUploadProgressCallback({ written: 0, encrypted: 0, total: 100 });
+            // Affichage immédiat de la taille réelle : le callback de netmd est throttlé à 200 ms.
+            lastUploadProgress = 0;
+            dispatch(uploadDialogActions.setWriteProgress({ written: 0, encrypted: 0, total: data.byteLength }));
+            console.log(
+                `[MiniDiscBurner] Upload: writing track ${i - 1}/${files.length} (${(data.byteLength / 1048576).toFixed(1)} MiB, codec ${file.forcedEncoding?.codec ?? format.codec})`
+            );
             if (file.forcedEncoding?.codec === 'SPS' || file.forcedEncoding?.codec === 'SPM') {
                 // Uploading an AEA file.
                 await netmdFactoryService!.uploadSP(
@@ -1671,6 +1699,8 @@ export function convertAndUpload(
                     data,
                     updateUploadProgressCallback
                 );
+                dispatch(uploadDialogActions.setWriteProgress({ written: data.byteLength, encrypted: data.byteLength, total: data.byteLength }));
+                console.log(`[MiniDiscBurner] Upload: track ${i - 1} written to device`);
             } else {
                 try {
                     // SPS / SPM was filtered out before
@@ -1682,6 +1712,8 @@ export function convertAndUpload(
                         formatOverride,
                         updateUploadProgressCallback
                     );
+                    dispatch(uploadDialogActions.setWriteProgress({ written: data.byteLength, encrypted: data.byteLength, total: data.byteLength }));
+                    console.log(`[MiniDiscBurner] Upload: track ${i - 1} written to device`);
                 } catch (err) {
                     error = err;
                     errorMessage = `${file.file.name}: Error uploading to device. There might not be enough space left, or an unknown error occurred.`;
@@ -1689,7 +1721,9 @@ export function convertAndUpload(
                 }
             }
         }
+        console.log('[MiniDiscBurner] Upload: finalizing secure session');
         await netmdService?.finalizeUpload();
+        console.log('[MiniDiscBurner] Upload: secure session closed');
         await audioExportService!.deinit();
 
         if (format.codec === 'SPM' && !deviceCapabilities.includes(Capability.nativeMonoUpload)) {

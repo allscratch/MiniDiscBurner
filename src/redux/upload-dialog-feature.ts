@@ -19,6 +19,8 @@ export interface LoadingDialogState {
 
     conversionStepName: string | null;
 
+    uploadHint: string | null;
+
     trackEncodeProgress: number;
     trackEncodeProgressOutOf: number;
 }
@@ -43,6 +45,8 @@ const initialState: LoadingDialogState = {
     trackEncodeProgressOutOf: 0,
 
     conversionStepName: null,
+
+    uploadHint: null,
 };
 
 export const slice = createSlice({
@@ -75,6 +79,9 @@ export const slice = createSlice({
             state.trackEncodeProgress = action.payload.state;
             state.trackEncodeProgressOutOf = action.payload.total;
             state.conversionStepName = action.payload.conversionStepName;
+        },
+        setUploadHint: (state, action: PayloadAction<string | null>) => {
+            state.uploadHint = action.payload;
         },
     },
 });

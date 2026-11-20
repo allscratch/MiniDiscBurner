@@ -16,6 +16,8 @@ import { belowDesktop, useShallowEqualSelector, batchActions } from '../frontend
 import { actions as convertDialogActions, ForcedEncodingFormat, TitleFormatType } from '../redux/convert-dialog-feature';
 import { actions as renameDialogActions, RenameType } from '../redux/rename-dialog-feature';
 import { actions as appActions } from '../redux/app-feature';
+import { actions as uploadDialogActions } from '../redux/upload-dialog-feature';
+import { actions as errorDialogAction } from '../redux/error-dialog-feature';
 import { convertAndUpload, openLocalLibrary } from '../redux/actions';
 
 import Dialog from '@mui/material/Dialog';
@@ -827,7 +829,7 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
     const handleConvert = useCallback(() => {
         handleClose();
         setEnableReplayGain(false);
-        dispatch(
+        const uploadTask = dispatch(
             convertAndUpload(
                 titles.map((n, i) => ({
                     ...n,
@@ -843,7 +845,20 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
                     enableGapless,
                 }
             )
-        );
+        ) as unknown as Promise<void>;
+
+        // Garde-fou : une erreur avant la boucle d'upload (prepareUpload / uploadSP)
+        // ne doit jamais laisser la boîte de dialogue bloquée sur "Uploading 1 of 1".
+        uploadTask.catch((err) => {
+            console.error('[MiniDiscBurner] Upload failed unexpectedly', err);
+            dispatch(
+                batchActions([
+                    uploadDialogActions.setVisible(false),
+                    errorDialogAction.setVisible(true),
+                    errorDialogAction.setErrorMessage(`Recording failed: ${err instanceof Error ? err.message : String(err)}`),
+                ])
+            );
+        });
     }, [dispatch, handleClose, titles, currentlySelectedCodec, files, enableReplayGain, enableGapless]);
 
     const encoderSupportState = useMemo(

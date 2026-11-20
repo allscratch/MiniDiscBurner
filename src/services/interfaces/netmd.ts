@@ -723,7 +723,13 @@ export class NetMDUSBService extends NetMDService {
         // This is NetMD - only 4 options supported.
         let format;
         if(_format.codec === 'AT3') {
-            format = _format.bitrate === 66 ? 'LP4' : 'LP2';
+            if (_format.bitrate === 66) {
+                format = 'LP4';
+            } else if (_format.bitrate === 105) {
+                format = 'LP105';
+            } else {
+                format = 'LP2';
+            }
         } else if(_format.codec == 'SPS' || _format.codec === 'SPM') {
             format = "SP"
         } else throw new Error('Invalid format for NetMD upload');
@@ -739,21 +745,23 @@ export class NetMDUSBService extends NetMDService {
 
         const [w, creator] = this.getWorkerForUpload();
 
-        const webWorkerAsyncPacketIterator = creator(w, ({ encryptedBytes }: { encryptedBytes: number }) => {
-            encrypted = encryptedBytes;
-            updateProgress();
-        });
+        try {
+            const webWorkerAsyncPacketIterator = creator(w, ({ encryptedBytes }: { encryptedBytes: number }) => {
+                encrypted = encryptedBytes;
+                updateProgress();
+            });
 
-        const halfWidthTitle = sanitizeHalfWidthTitle(title);
-        fullWidthTitle = sanitizeFullWidthTitle(fullWidthTitle);
-        const mdTrack = new MDTrack(halfWidthTitle, WireformatDict[format], data, 0x400, fullWidthTitle, webWorkerAsyncPacketIterator);
+            const halfWidthTitle = sanitizeHalfWidthTitle(title);
+            fullWidthTitle = sanitizeFullWidthTitle(fullWidthTitle);
+            const mdTrack = new MDTrack(halfWidthTitle, WireformatDict[format], data, 0x400, fullWidthTitle, webWorkerAsyncPacketIterator);
 
-        await this.currentSession.downloadTrack(mdTrack, ({ writtenBytes }) => {
-            written = writtenBytes;
-            updateProgress();
-        }, _format.codec === 'SPM' ? DiscFormat.spMono : undefined);
-
-        w.terminate();
+            await this.currentSession.downloadTrack(mdTrack, ({ writtenBytes }) => {
+                written = writtenBytes;
+                updateProgress();
+            }, _format.codec === 'SPM' ? DiscFormat.spMono : undefined);
+        } finally {
+            w.terminate();
+        }
         this.dropCachedContentList();
     }
 
@@ -981,27 +989,28 @@ class NetMDFactoryUSBService implements NetMDFactoryService {
 
         const [w, creator] = this.parent.getWorkerForUpload();
 
-        const webWorkerAsyncPacketIterator = creator(w, ({ encryptedBytes }: { encryptedBytes: number }) => {
-            encrypted = encryptedBytes;
-            updateProgress();
-        });
-
-        const halfWidthTitle = sanitizeHalfWidthTitle(title);
-        fullWidthTitle = sanitizeFullWidthTitle(fullWidthTitle);
-        let mdTrack = new MDTrack(halfWidthTitle, Wireformat.l105kbps, data, 0x400, fullWidthTitle, webWorkerAsyncPacketIterator);
-
         let index = -1;
-
-        await this.exploitStateManager.envelop(SPUpload, mono ? 1 : 2, async spUpload => {
-            mdTrack = spUpload.prepareTrack(mdTrack);
-            total = mdTrack.data.byteLength;
-            [index] = (await this.parent.currentSession!.downloadTrack(mdTrack, ({ writtenBytes }) => {
-                written = writtenBytes;
+        try {
+            const webWorkerAsyncPacketIterator = creator(w, ({ encryptedBytes }: { encryptedBytes: number }) => {
+                encrypted = encryptedBytes;
                 updateProgress();
-            })) as any;
-        });
+            });
 
-        w.terminate();
+            const halfWidthTitle = sanitizeHalfWidthTitle(title);
+            fullWidthTitle = sanitizeFullWidthTitle(fullWidthTitle);
+            let mdTrack = new MDTrack(halfWidthTitle, Wireformat.l105kbps, data, 0x400, fullWidthTitle, webWorkerAsyncPacketIterator);
+
+            await this.exploitStateManager.envelop(SPUpload, mono ? 1 : 2, async spUpload => {
+                mdTrack = spUpload.prepareTrack(mdTrack);
+                total = mdTrack.data.byteLength;
+                [index] = (await this.parent.currentSession!.downloadTrack(mdTrack, ({ writtenBytes }) => {
+                    written = writtenBytes;
+                    updateProgress();
+                })) as any;
+            });
+        } finally {
+            w.terminate();
+        }
 
         if (this.fasterTransferEnabled) {
             await this.exploitStateManager.require(PCMFasterUpload);

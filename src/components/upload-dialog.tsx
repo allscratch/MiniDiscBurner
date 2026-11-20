@@ -36,7 +36,17 @@ const useStyles = makeStyles()((theme) => ({
     checkBox: {
         marginLeft: 0,
     },
+    uploadHint: {
+        marginTop: theme.spacing(2),
+        fontSize: '0.875rem',
+    },
 }));
+
+const formatBytes = (bytes: number): string => {
+    if (!Number.isFinite(bytes) || bytes < 0) return '0 MiB';
+    if (bytes < 1048576) return `${Math.round(bytes / 1024)} KiB`;
+    return `${(bytes / 1048576).toFixed(1)} MiB`;
+};
 
 const Transition = React.forwardRef(function Transition(props: SlideProps, ref: React.Ref<unknown>) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -62,6 +72,7 @@ export const UploadDialog = (props: {}) => {
         trackEncodeProgress,
         trackEncodeProgressOutOf,
         conversionStepName,
+        uploadHint,
     } = useShallowEqualSelector((state) => state.uploadDialog);
     const { vintageMode, notifyWhenFinished, hasNotificationSupport } = useShallowEqualSelector((state) => state.appState);
 
@@ -142,7 +153,14 @@ export const UploadDialog = (props: {}) => {
                     value={progressValue}
                     valueBuffer={bufferValue}
                 />
-                <Box className={classes.progressPerc}>{progressValue}%</Box>
+                <Box className={classes.progressPerc}>
+                    <span>{progressValue}%</span>
+                    <span style={{ flexGrow: 1 }} />
+                    <span>{`${formatBytes(writtenProgress)} / ${formatBytes(totalProgress)}`}</span>
+                </Box>
+                {uploadHint ? (
+                    <DialogContentText className={classes.uploadHint}>{uploadHint}</DialogContentText>
+                ) : null}
             </DialogContent>
             <DialogActions>
                 {hasNotificationSupport ? (
