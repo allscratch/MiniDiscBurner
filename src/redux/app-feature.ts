@@ -6,6 +6,20 @@ import { savePreference, loadPreference } from '../utils';
 
 export type Views = 'WELCOME' | 'MAIN' | 'FACTORY';
 
+const REDESIGN_THEME_KEY = 'mdb-redesign-dark-v1';
+
+// Le redesign « Bleu glacier » est conçu pour le mode sombre. Le défaut
+// historique était « system » (clair sur macOS) : on bascule une seule fois
+// vers le sombre, puis le choix de l'utilisateur est de nouveau respecté.
+function loadInitialColorTheme(): 'dark' | 'light' | 'system' {
+    if (loadPreference<boolean>(REDESIGN_THEME_KEY, false)) {
+        return loadPreference<'dark' | 'light' | 'system'>('colorTheme', 'dark');
+    }
+    savePreference(REDESIGN_THEME_KEY, true);
+    savePreference('colorTheme', 'dark');
+    return 'dark';
+}
+
 export interface AppState {
     mainView: Views;
     loading: boolean;
@@ -49,7 +63,7 @@ export const buildInitialState = (): AppState => {
         browserSupported: true,
         runningChrome: true,
         connectingInProgress: false,
-        colorTheme: loadPreference('colorTheme', 'dark'),
+        colorTheme: loadInitialColorTheme(),
         vintageMode: loadPreference('vintageMode', false),
         changelogDialogVisible: false,
         aboutDialogVisible: false,
