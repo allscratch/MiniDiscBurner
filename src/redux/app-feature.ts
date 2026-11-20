@@ -124,6 +124,11 @@ export const slice = createSlice({
         setDeviceConnected: (state, action: PayloadAction<boolean>) => {
             state.deviceConnected = action.payload;
         },
+        // Retour à la carte Appareil sans déclencher le middleware de reset
+        // (setMainView('WELCOME') effacerait l'état de connexion).
+        returnToWelcome: (state) => {
+            state.mainView = 'WELCOME';
+        },
         setDarkMode: (state, action: PayloadAction<'dark' | 'light' | 'system'>) => {
             state.colorTheme = action.payload;
             savePreference('colorTheme', state.colorTheme);

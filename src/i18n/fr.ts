@@ -451,6 +451,7 @@ export const FR: Record<string, string> = {
   "to your MiniDisc.": "vers votre MiniDisc.",
   "Drop your files, choose the format and let MiniDiscBurner do the rest. Your recorder is ready.": "Glissez vos fichiers, choisissez le format et laissez MiniDiscBurner faire le reste. Votre enregistreur est prêt.",
   "Connect": "Connecter",
+  "Disconnect": "Déconnecter",
   "Connect your recorder": "Connectez votre enregistreur",
   "Select a model and press connect to begin": "Sélectionnez un modèle et appuyez sur Connecter pour commencer",
   "Drop your files here": "Déposez vos fichiers ici",

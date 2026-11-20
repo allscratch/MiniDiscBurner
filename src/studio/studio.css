@@ -139,6 +139,20 @@
     color: var(--mdb-accent);
 }
 
+.mdb-shell .mdb-disconnect {
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    color: #ff8a8a;
+    background: rgba(255, 138, 138, 0.06);
+    border-color: rgba(255, 138, 138, 0.4);
+}
+
+.mdb-shell .mdb-disconnect:hover {
+    background: rgba(255, 138, 138, 0.12);
+    border-color: rgba(255, 138, 138, 0.7);
+}
+
 .mdb-shell .mdb-dot {
     width: 8px;
     height: 8px;

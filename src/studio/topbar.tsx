@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from '../frontend-utils';
 import { actions as appActions, Views } from '../redux/app-feature';
-import { openLocalLibrary } from '../redux/actions';
+import { disconnect, openLocalLibrary } from '../redux/actions';
 import { setFrenchEnabled } from '../i18n/runtime';
 import { TopMenu } from '../components/topmenu';
 
@@ -45,11 +45,15 @@ export function StudioTopbar({
     const openSettings = useCallback(() => dispatch(appActions.showSettingsDialog(true)), [dispatch]);
     const openLibrary = useCallback(() => dispatch(openLocalLibrary()), [dispatch]);
     const openHelp = useCallback(() => window.open(GUIDE_URL, '_blank', 'noopener,noreferrer'), []);
+    const handleDisconnect = useCallback(() => dispatch(disconnect()), [dispatch]);
     const goHome = useCallback(() => {
         if (view === 'FACTORY') {
             dispatch(appActions.setMainView('MAIN'));
-        } else {
+        } else if (view === 'WELCOME') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            // Revenir à la carte Appareil sans perdre la session en cours.
+            dispatch(appActions.returnToWelcome());
         }
     }, [dispatch, view]);
 
@@ -84,6 +88,11 @@ export function StudioTopbar({
                     'No device connected'
                 )}
             </div>
+            {connected && (
+                <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Déconnecter">
+                    Disconnect
+                </button>
+            )}
             <button type="button" className="mdb-pill mdb-lang" onClick={toggleLanguage} title="Langue : Français / English">
                 {french ? 'FR' : 'EN'}
             </button>
