@@ -17,7 +17,15 @@ function readFrench(): boolean {
 }
 
 /** Barre supérieure du design « Studio », avec le menu d'actions d'origine. */
-export function StudioTopbar({ view, deviceName }: { view: Views; deviceName: string }) {
+export function StudioTopbar({
+    view,
+    deviceName,
+    connected,
+}: {
+    view: Views;
+    deviceName: string;
+    connected: boolean;
+}) {
     const dispatch = useDispatch();
     const [french, setFrench] = useState(readFrench);
 
@@ -45,8 +53,6 @@ export function StudioTopbar({ view, deviceName }: { view: Views; deviceName: st
         }
     }, [dispatch, view]);
 
-    const connected = view === 'MAIN' && !!deviceName;
-
     return (
         <div className="mdb-topbar">
             <div className="mdb-brand">
@@ -72,7 +78,7 @@ export function StudioTopbar({ view, deviceName }: { view: Views; deviceName: st
                 <span className={'mdb-dot' + (connected ? '' : ' off')} />
                 {connected ? (
                     <>
-                        <strong>{deviceName}</strong> connected
+                        <strong>{deviceName || 'Appareil'}</strong> connecté
                     </>
                 ) : (
                     'No device connected'

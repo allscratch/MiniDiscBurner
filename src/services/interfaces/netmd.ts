@@ -255,6 +255,8 @@ export abstract class NetMDService {
     abstract getPosition(): Promise<number[] | null>;
     abstract isDeviceConnected(device: USBDevice): boolean;
 
+    async disconnect(): Promise<void> {}
+
     async factory(): Promise<NetMDFactoryService | null> {
         return null;
     }
@@ -467,6 +469,24 @@ export class NetMDUSBService extends NetMDService {
     protected dropCachedContentList() {
         console.log('Cached TOC Dropped');
         this.cachedContentList = undefined;
+    }
+
+    async disconnect() {
+        // Libère d'abord la session NetMD, puis l'interface WebUSB elle-même.
+        try {
+            await this.netmdInterface?.release();
+        } catch (err) {
+            console.error('[MiniDiscBurner] NetMD release failed', err);
+        }
+        try {
+            await this.netmdInterface?.netMd.finalize();
+        } catch (err) {
+            console.error('[MiniDiscBurner] USB close failed', err);
+        } finally {
+            this.netmdInterface = undefined;
+            this.currentSession = undefined;
+            this.dropCachedContentList();
+        }
     }
 
     async pair() {

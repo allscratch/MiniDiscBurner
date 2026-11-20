@@ -504,6 +504,16 @@ export class HiMDFullService extends HiMDRestrictedService {
         await this.fsDriver?.driver?.close();
     }
 
+    async disconnect(): Promise<void> {
+        try {
+            await this.finalize();
+        } finally {
+            this.atdata = null;
+            this.cachedDisc = undefined;
+            this.himd = undefined;
+        }
+    }
+
     async prepareUpload(): Promise<void> {
         await super.prepareUpload();
         const [w, _, creator] = this.getWorker();

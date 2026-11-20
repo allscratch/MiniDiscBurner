@@ -46,7 +46,7 @@ if (localStorage.getItem('version') !== (window as any).wmdVersion) {
 
     if (navigator && navigator.usb) {
         navigator.usb.ondisconnect = function (event) {
-            if (serviceRegistry.netmdService!.isDeviceConnected(event.device)) {
+            if (serviceRegistry.netmdService?.isDeviceConnected(event.device)) {
                 store.dispatch(appActions.setMainView('WELCOME'));
                 document.title = originalApplicationTitle;
             } else {

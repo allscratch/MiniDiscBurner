@@ -270,7 +270,7 @@ const lightTheme = createTheme({
 });
 
 const InternalApp = () => {
-    const { mainView, loading, pageFullHeight, pageFullWidth } = useShallowEqualSelector((state) => state.appState);
+    const { mainView, loading, pageFullHeight, pageFullWidth, deviceConnected } = useShallowEqualSelector((state) => state.appState);
     const { deviceCapabilities, deviceName } = useShallowEqualSelector((state) => state.main);
     const { classes, cx } = useStyles();
     const dispatch = useDispatch();
@@ -293,7 +293,7 @@ const InternalApp = () => {
             >
                 <main className={cx(classes.layout, 'mdb-shell', { [classes.layoutFullWidth]: pageFullWidth })}>
                     <div className="mdb-shell-inner">
-                        <StudioTopbar view={mainView} deviceName={deviceName} />
+                        <StudioTopbar view={mainView} deviceName={deviceName} connected={deviceConnected} />
                         <Paper
                             className={cx(classes.paper, {
                                 [classes.paperShowsList]: deviceCapabilities.includes(0 /*Capability.listContent*/),

@@ -192,6 +192,12 @@
     align-items: stretch;
 }
 
+/* Accueil progressif : une seule carte, centrée, avant/après connexion. */
+.mdb-shell .mdb-hero.mdb-hero-single {
+    grid-template-columns: minmax(0, 620px);
+    justify-content: center;
+}
+
 .mdb-shell .mdb-card {
     background: linear-gradient(180deg, var(--mdb-panel-2), var(--mdb-panel));
     border: 1px solid var(--mdb-line);
@@ -387,7 +393,10 @@
     margin: 8px 0 6px;
 }
 
-.mdb-shell .mdb-meter .MuiLinearProgress-bar {
+.mdb-shell .mdb-meter .MuiLinearProgress-bar,
+.mdb-shell .mdb-meter i {
+    display: block;
+    height: 100%;
     border-radius: 99px;
     background: linear-gradient(90deg, #2f7fd1, var(--mdb-accent-2));
 }
@@ -403,6 +412,32 @@
 
 .mdb-shell .mdb-meter-label strong {
     color: var(--mdb-text);
+}
+
+.mdb-shell .mdb-device-status {
+    color: var(--mdb-muted);
+    font-size: 12px;
+    margin-top: 14px;
+}
+
+.mdb-shell .mdb-device-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--mdb-line);
+}
+
+.mdb-shell .mdb-btn-danger {
+    background: transparent;
+    color: #ff8a8a;
+    border: 1px solid rgba(255, 138, 138, 0.45);
+    box-shadow: none;
+}
+
+.mdb-shell .mdb-btn-danger:hover {
+    background: rgba(255, 138, 138, 0.08);
 }
 
 .mdb-shell .mdb-quick {

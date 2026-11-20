@@ -334,7 +334,7 @@ export function deleteService(index: number) {
     };
 }
 
-export function pair(serviceInstance: NetMDService, spec: MinidiscSpec) {
+export function pair(serviceInstance: NetMDService, spec: MinidiscSpec, openStudio: boolean = true) {
     return async function (dispatch: AppDispatch, getState: () => RootState) {
         dispatch(
             batchActions([
@@ -361,10 +361,19 @@ export function pair(serviceInstance: NetMDService, spec: MinidiscSpec) {
         serviceRegistry.netmdSpec = spec;
         serviceRegistry.netmdFactoryService = undefined;
 
+        const onConnected = () => {
+            dispatch(appStateActions.setDeviceConnected(true));
+            if (openStudio) {
+                dispatch(appStateActions.setMainView('MAIN'));
+            } else {
+                listContent()(dispatch);
+            }
+        };
+
         try {
             const connected = await serviceRegistry.netmdService!.connect();
             if (connected) {
-                dispatch(appStateActions.setMainView('MAIN'));
+                onConnected();
                 return;
             }
         } catch (err) {
@@ -375,13 +384,8 @@ export function pair(serviceInstance: NetMDService, spec: MinidiscSpec) {
         try {
             const paired = await serviceRegistry.netmdService!.pair();
             if (paired) {
-                dispatch(
-                    batchActions([
-                        appStateActions.setMainView('MAIN'),
-                        errorDialogAction.setErrorMessage(''),
-                        errorDialogAction.setVisible(false),
-                    ])
-                );
+                dispatch(batchActions([errorDialogAction.setErrorMessage(''), errorDialogAction.setVisible(false)]));
+                onConnected();
                 return;
             }
             dispatch(batchActions([appStateActions.setPairingMessage(`Connection Failed`), appStateActions.setPairingFailed(true)]));
@@ -394,6 +398,20 @@ export function pair(serviceInstance: NetMDService, spec: MinidiscSpec) {
         } finally {
             dispatch(appStateActions.setConnectingInProgress(false));
         }
+    };
+}
+
+export function disconnect() {
+    return async function (dispatch: AppDispatch) {
+        try {
+            await serviceRegistry.netmdService?.disconnect();
+        } catch (err) {
+            console.error('[MiniDiscBurner] Disconnect failed', err);
+        }
+        serviceRegistry.netmdService = undefined;
+        serviceRegistry.netmdFactoryService = undefined;
+        // La remise à WELCOME déclenche le middleware qui réinitialise l'état complet.
+        dispatch(appStateActions.setMainView('WELCOME'));
     };
 }
 
