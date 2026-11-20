@@ -16,6 +16,7 @@
   "homepage": "https://github.com/allscratch/MiniDiscBurner",
   "scripts": {
     "start": "npm run dev",
+    "predev": "node scripts/ensure-dev-encoders.cjs",
     "dev": "npm run update-version && vite",
     "build-noencoders": "npm run update-version && tsc && vite build",
     "build": "npm run build-noencoders && npm run postbuild-default-encoders",
