@@ -460,6 +460,7 @@ export const FR: Record<string, string> = {
   "NetMD recorder": "Enregistreur NetMD",
   "No device connected": "Aucun appareil connecté",
   "Please connect your device": "Veuillez connecter votre appareil",
+  "Configure a library in Settings": "Configurez une bibliothèque dans les paramètres",
   "Ready to connect": "Prêt à connecter",
   "Disc loaded": "Disque chargé",
   "No disc loaded": "Aucun disque chargé",

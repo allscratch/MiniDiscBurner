@@ -102,6 +102,16 @@ html body {
     text-transform: none;
 }
 
+.mdb-shell .mdb-topbar .mdb-pill.mdb-pill-notice {
+    color: #ffc850;
+    font-weight: 650;
+    text-shadow: 0 0 14px rgba(255, 200, 80, 0.28);
+}
+
+.mdb-shell .mdb-nav-item[aria-disabled='true'] {
+    opacity: 0.72;
+}
+
 .mdb-shell .mdb-dot {
     width: 7px;
     height: 7px;

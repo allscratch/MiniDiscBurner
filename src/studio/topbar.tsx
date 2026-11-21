@@ -3,6 +3,7 @@ import { useDispatch } from '../frontend-utils';
 import { actions as appActions, Views } from '../redux/app-feature';
 import { disconnect, openLocalLibrary } from '../redux/actions';
 import { setFrenchEnabled } from '../i18n/runtime';
+import serviceRegistry from '../services/registry';
 import { TopMenu } from '../components/topmenu';
 
 const LANGUAGE_EVENT = 'mdb-language-change';
@@ -27,12 +28,25 @@ export function StudioTopbar({
 }) {
     const dispatch = useDispatch();
     const [french, setFrench] = useState(readFrench);
+    const [notice, setNotice] = useState('');
 
     useEffect(() => {
         const sync = (event: Event) => setFrench((event as CustomEvent<boolean>).detail);
         window.addEventListener(LANGUAGE_EVENT, sync);
         return () => window.removeEventListener(LANGUAGE_EVENT, sync);
     }, []);
+
+    useEffect(() => {
+        if (connected) setNotice('');
+    }, [connected]);
+
+    useEffect(() => {
+        if (!notice) return;
+        const timer = window.setTimeout(() => setNotice(''), 5000);
+        return () => window.clearTimeout(timer);
+    }, [notice]);
+
+    const showNotice = useCallback((message: string) => setNotice(message), []);
 
     const toggleLanguage = useCallback(() => {
         const next = !french;
@@ -41,9 +55,25 @@ export function StudioTopbar({
         window.dispatchEvent(new CustomEvent(LANGUAGE_EVENT, { detail: next }));
     }, [french]);
 
-    const openStudio = useCallback(() => dispatch(appActions.setMainView('MAIN')), [dispatch]);
+    const openStudio = useCallback(() => {
+        if (!connected) {
+            showNotice('Please connect your device');
+            return;
+        }
+        dispatch(appActions.setMainView('MAIN'));
+    }, [connected, dispatch, showNotice]);
     const openSettings = useCallback(() => dispatch(appActions.setMainView('SETTINGS')), [dispatch]);
-    const openLibrary = useCallback(() => dispatch(openLocalLibrary()), [dispatch]);
+    const openLibrary = useCallback(() => {
+        if (!connected) {
+            showNotice('Please connect your device');
+            return;
+        }
+        if (!serviceRegistry.libraryService) {
+            showNotice('Configure a library in Settings');
+            return;
+        }
+        dispatch(openLocalLibrary());
+    }, [connected, dispatch, showNotice]);
     const openHelp = useCallback(() => dispatch(appActions.setMainView('HELP')), [dispatch]);
     const handleDisconnect = useCallback(() => dispatch(disconnect()), [dispatch]);
     const goHome = useCallback(() => {
@@ -69,10 +99,15 @@ export function StudioTopbar({
                 <button type="button" className={'mdb-nav-item' + (view === 'WELCOME' ? ' active' : '')} onClick={goHome}>
                     Home
                 </button>
-                <button type="button" className={'mdb-nav-item' + (view === 'MAIN' ? ' active' : '')} onClick={openStudio}>
+                <button
+                    type="button"
+                    className={'mdb-nav-item' + (view === 'MAIN' ? ' active' : '')}
+                    onClick={openStudio}
+                    aria-disabled={!connected}
+                >
                     Studio
                 </button>
-                <button type="button" className="mdb-nav-item" onClick={openLibrary}>
+                <button type="button" className="mdb-nav-item" onClick={openLibrary} aria-disabled={!connected}>
                     Library
                 </button>
                 <button
@@ -91,15 +126,15 @@ export function StudioTopbar({
                 </button>
             </nav>
             <div className="mdb-spacer" />
-            <div className="mdb-pill">
+            <div className={'mdb-pill' + (notice ? ' mdb-pill-notice' : '')} role="status">
                 <span className={'mdb-dot' + (connected ? '' : ' off')} />
-                {connected ? (
+                {notice || (connected ? (
                     <>
                         <strong>{deviceName || 'Device'}</strong>{' connected'}
                     </>
                 ) : (
                     'Please connect your device'
-                )}
+                ))}
             </div>
             {connected && (
                 <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Close the USB session (recommended)">
