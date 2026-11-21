@@ -17,7 +17,7 @@ import { BrowserMediaSessionService } from './services/browserintegration/media-
 import { listContent } from './redux/actions';
 import { sleep } from './utils';
 import { SettingsResetErrorBoundary } from './components/settings-reset-error-boundary';
-import { installFrenchRuntime } from './i18n/runtime';
+import { installFrenchRuntime, setAppTitle, translateString } from './i18n/runtime';
 serviceRegistry.mediaRecorderService = new MediaRecorderService();
 serviceRegistry.mediaSessionService = new BrowserMediaSessionService(store);
 
@@ -41,14 +41,14 @@ if (localStorage.getItem('version') !== (window as any).wmdVersion) {
             return;
         }
         ev.preventDefault();
-        ev.returnValue = `Warning! Recording will be interrupted`;
+        ev.returnValue = translateString('Warning! Recording will be interrupted');
     });
 
     if (navigator && navigator.usb) {
         navigator.usb.ondisconnect = function (event) {
             if (serviceRegistry.netmdService?.isDeviceConnected(event.device)) {
                 store.dispatch(appActions.setMainView('WELCOME'));
-                document.title = originalApplicationTitle;
+                setAppTitle(originalApplicationTitle);
             } else {
                 console.log("The device disconnected isn't connected to this webapp");
             }
@@ -126,7 +126,7 @@ if (localStorage.getItem('version') !== (window as any).wmdVersion) {
                 // Since this function doesn't execute if there's any operational dialog on screen
                 // (including the track upload dialog), this won't conflict with anything.
                 if (document.title !== originalApplicationTitle) {
-                    document.title = originalApplicationTitle;
+                    setAppTitle(originalApplicationTitle);
                 }
                 await sleep(250);
             } catch (e) {

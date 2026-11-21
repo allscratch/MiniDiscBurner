@@ -575,7 +575,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
             <ListItemIcon className={classes.listItemIcon}>
                 <LanguageIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>{`Langue : ${french ? 'Français' : 'English'}`}</ListItemText>
+            <ListItemText>{`Language: ${french ? 'French' : 'English'}`}</ListItemText>
         </MenuItem>
     );
     menuItems.push(
@@ -591,7 +591,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
                     ref={githubLinkRef}
                     onClick={handleGithubLink}
                 >
-                    MiniDiscBurner sur GitHub
+                    MiniDiscBurner on GitHub
                 </Link>
             </ListItemText>
         </MenuItem>

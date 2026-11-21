@@ -10,10 +10,11 @@ const EXCLUDED_TAGS = new Set(['SCRIPT', 'STYLE', 'CODE', 'PRE', 'TEXTAREA', 'SE
 const PLACEHOLDER_SOURCE = String.raw`\$\{[^}]*\}|\{\d+\}|%[sd]`;
 const hasPlaceholder = (value: string): boolean => new RegExp(PLACEHOLDER_SOURCE).test(value);
 
-let enabled = true;
+let enabled = readLanguage();
 let installed = false;
 let scheduled = false;
 let observer: MutationObserver | null = null;
+let titleMemory: Memorized | null = null;
 
 const pending = new Set<Node>();
 const tracked = new Set<Node>();
@@ -75,6 +76,31 @@ function lookup(source: string): string | undefined {
     return entry.translation.replace(placeholderRegex(), () => match[index++] ?? '');
   }
   return undefined;
+}
+
+/** Traduit une chaîne hors DOM (alert, confirm, titre, notification...). */
+export function translateString(source: string): string {
+    if (!enabled) return source;
+    return lookup(source) ?? source;
+}
+
+/** Met à jour le titre de la page en respectant la langue courante. */
+export function setAppTitle(title: string): void {
+    const translated = translateString(title);
+    titleMemory = { source: title, translated };
+    document.title = translated;
+}
+
+/** Intercepte les boîtes natives, que l'observateur DOM ne peut pas voir. */
+function installNativeDialogs(): void {
+    const nativeAlert = window.alert.bind(window);
+    const nativeConfirm = window.confirm.bind(window);
+    const nativePrompt = window.prompt.bind(window);
+
+    window.alert = (message?: unknown) => nativeAlert(translateString(String(message ?? '')));
+    window.confirm = (message?: unknown) => nativeConfirm(translateString(String(message ?? '')));
+    window.prompt = (message?: unknown, defaultValue?: string) =>
+        nativePrompt(translateString(String(message ?? '')), defaultValue);
 }
 
 function isExcluded(node: Node): boolean {
@@ -205,6 +231,7 @@ export function installFrenchRuntime(): void {
   installed = true;
   buildIndexes();
   enabled = readLanguage();
+  installNativeDialogs();
 
   observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
@@ -234,7 +261,9 @@ export function setFrenchEnabled(nextEnabled: boolean): void {
   writeLanguage(nextEnabled);
   if (!nextEnabled) {
     restoreSources();
+    if (titleMemory && document.title === titleMemory.translated) document.title = titleMemory.source;
     return;
   }
+  if (titleMemory && document.title === titleMemory.source) document.title = titleMemory.translated;
   if (installed) schedule(document.body);
 }

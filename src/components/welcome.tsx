@@ -244,15 +244,15 @@ export const Welcome = (props: {}) => {
         80
     );
     const capacityLabel = !disc
-        ? 'Aucun disque chargé'
+        ? 'No disc loaded'
         : usesTimeCapacity
         ? `≈ ${nominalCapacity} min (SP) · ${nominalCapacity * 2} min (LP2) · ${nominalCapacity * 4} min (LP4)`
         : bytesToHumanReadable(disc.total);
     const remainingLabel = !disc
         ? '—'
         : usesTimeCapacity
-        ? `${formatTimeFromSeconds(disc.left)} restantes`
-        : `${bytesToHumanReadable(disc.left)} restants`;
+        ? `${formatTimeFromSeconds(disc.left)} remaining`
+        : `${bytesToHumanReadable(disc.left)} remaining`;
     const codecLabel = minidiscSpec ? getDefaultCodecName(minidiscSpec) : 'SP';
 
     return (
@@ -263,18 +263,18 @@ export const Welcome = (props: {}) => {
                         <MiniDiscVisual />
                         <div className="mdb-card-content">
                         <div className="mdb-section-head">
-                            <div className="mdb-eyebrow">Étape 2 · Appareil</div>
+                            <div className="mdb-eyebrow">Step 2 · Device</div>
                             <StepIndicator active={2} />
                         </div>
                         <div className="mdb-device-head">
                             <div className="mdb-disc" aria-hidden="true" />
                             <div>
-                                <div className="mdb-device-name">{deviceName || 'Enregistreur NetMD'}</div>
-                                <div className="mdb-device-meta"><span className="mdb-badge">PRÊT</span> NetMD · USB</div>
+                                <div className="mdb-device-name">{deviceName || 'NetMD recorder'}</div>
+                                <div className="mdb-device-meta"><span className="mdb-badge">READY</span> NetMD · USB</div>
                             </div>
                         </div>
                         <div className="mdb-meter-label">
-                            <span>Espace disque utilisé</span>
+                            <span>Disc space used</span>
                             <strong>{disc ? `${usedPercent} %` : '—'}</strong>
                         </div>
                         <div className="mdb-meter"><i style={{ width: `${usedPercent}%` }} /></div>
@@ -283,14 +283,14 @@ export const Welcome = (props: {}) => {
                             <span>{codecLabel} · {capacityLabel}</span>
                         </div>
                         <div className="mdb-device-status">
-                            {disc ? (disc.writeProtected ? 'Disque protégé en écriture' : 'Disque prêt · TOC chargée') : 'Aucun disque chargé'}
+                            {disc ? (disc.writeProtected ? 'Write protected disc' : 'Disc ready · TOC loaded') : 'No disc loaded'}
                         </div>
                         <div className="mdb-device-actions">
                             <button type="button" className="mdb-btn" onClick={handleOpenStudio}>
-                                Ouvrir le studio de transfert
+                                Open transfer studio
                             </button>
                             <button type="button" className="mdb-btn mdb-btn-danger" onClick={handleDisconnect}>
-                                Déconnecter
+                                Disconnect
                             </button>
                         </div>
                         </div>
@@ -302,15 +302,15 @@ export const Welcome = (props: {}) => {
                         <MiniDiscVisual />
                         <div className="mdb-card-content">
                         <div className="mdb-section-head">
-                            <div className="mdb-eyebrow">Étape 1 · Connexion</div>
+                            <div className="mdb-eyebrow">Step 1 · Connection</div>
                             <StepIndicator active={1} />
                         </div>
                         <Typography component="h1" className="mdb-h1">
-                            Votre musique, <span className="mdb-accent-text">sur MiniDisc.</span>
-                            <br />Enfin simple.
+                            Your music, <span className="mdb-accent-text">on MiniDisc.</span>
+                            <br />Finally simple.
                         </Typography>
                         <Typography component="p" className="mdb-lead">
-                            Connectez votre enregistreur NetMD, choisissez vos pistes et laissez MiniDiscBurner s’occuper du reste. Une interface claire, du premier clic jusqu’au dernier ouvrage.
+                            Connect your NetMD recorder, choose your tracks and let MiniDiscBurner take care of the rest. A clear interface, from the first click to the final recording.
                         </Typography>
 
                         {browserSupported ? (
@@ -323,7 +323,7 @@ export const Welcome = (props: {}) => {
                                         disabled={connectingInProgress}
                                     >
                                         <span className="mdb-drop-icon" aria-hidden="true">⌁</span>
-                                        <strong>Connecter un appareil NetMD</strong>
+                                        <strong>Connect a NetMD device</strong>
                                         <small>WebUSB · Chromium / Edge / Brave</small>
                                     </button>
 
@@ -343,7 +343,7 @@ export const Welcome = (props: {}) => {
                                             target="_blank"
                                             href="https://www.minidisc.wiki/guides/webminidisc"
                                         >
-                                            <span>Guide de démarrage</span> <OpenInNewIcon fontSize="inherit" />
+                                            <span>Getting started guide</span> <OpenInNewIcon fontSize="inherit" />
                                         </Link>
                                     </div>
                                 </div>
@@ -372,7 +372,7 @@ export const Welcome = (props: {}) => {
                                 )}
                                 <div className="mdb-features">
                                     <span className="mdb-feature"><b>01</b> WebUSB</span>
-                                    <span className="mdb-feature"><b>02</b> Encodage local</span>
+                                    <span className="mdb-feature"><b>02</b> Local encoding</span>
                                     <span className="mdb-feature"><b>03</b> SP · LP2 · LP4</span>
                                 </div>
                             </React.Fragment>

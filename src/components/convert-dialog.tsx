@@ -870,6 +870,12 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
     }, [setEnableGapless, encoderSupportState]);
     const isSelectedIncomplete = encoderSupportState.state === 'poor';
     const isSelectedUnsupported = encoderSupportState.state === 'unsupported';
+    const widthTypes = [
+        availableCharacters.halfWidth > 0 ? 'half' : null,
+        availableCharacters.fullWidth > 0 ? 'full' : null,
+    ]
+        .filter((n) => n !== null)
+        .join(' and ');
     const formatsSupport: { state: 'perfect' | 'poor' | 'unsupported'; gapless: boolean; bitrates: number[] }[] = useMemo(() =>
         serviceRegistry.audioExportService ? minidiscSpec.availableFormats.map((e) => {
             const info = serviceRegistry.audioExportService!.getSupportFor(
@@ -1014,11 +1020,7 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
                     style={{ marginTop: '1em' }}
                     align="center"
                 >
-                    Warning: You have used up all the available{' '}
-                    {[availableCharacters.halfWidth > 0 ? 'half' : null, availableCharacters.fullWidth > 0 ? 'full' : null]
-                        .filter((n) => n !== null)
-                        .join(' and ')}{' '}
-                    width characters. Some titles might get cut off.
+                    {`Warning: You have used up all the available ${widthTypes} width characters. Some titles might get cut off.`}
                 </Typography>
                 <Typography
                     component="h3"
@@ -1036,8 +1038,7 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
                     style={{ marginTop: '1em' }}
                     align="center"
                 >
-                    Warning: You are using an incomplete encoder. The resulting audio is not going to be perfect. Alternative encoders are
-                    available in the settings.
+                    {'Warning: You are using an incomplete encoder. The resulting audio is not going to be perfect. Alternative encoders are available in the settings.'}
                 </Typography>
                 <Typography
                     component="h3"
@@ -1046,8 +1047,7 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
                     style={{ marginTop: '1em' }}
                     align="center"
                 >
-                    Error: The selected encoder backend does not support this codec! Please choose a different codec, or change the encoder
-                    in settings!
+                    {'Error: The selected encoder backend does not support this codec! Please choose a different codec, or change the encoder in settings!'}
                 </Typography>
                 <span className={classes.durationsSpan}>
                     <Typography component="h3" align="center" hidden={loadingMetadata}>

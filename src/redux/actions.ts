@@ -1,4 +1,5 @@
 import { batchActions } from '../frontend-utils';
+import { setAppTitle, translateString } from '../i18n/runtime';
 import { AppDispatch, RootState } from './store';
 import { actions as localLibraryActions } from './local-library-feature';
 import { actions as uploadDialogActions } from './upload-dialog-feature';
@@ -1076,9 +1077,7 @@ export function importCSV(file: File) {
             // - 2 - one for the header, second for the disc title / info
             if (
                 !window.confirm(
-                    `The CSV file describes a disc with ${records.length - 2} tracks.\nThe disc inserted has ${
-                        disc.trackCount
-                    } tracks.\nContinue importing?`
+                    `The CSV file describes a disc with ${records.length - 2} tracks.\nThe disc inserted has ${disc.trackCount} tracks.\nContinue importing?`
                 )
             ) {
                 dispatch(appStateActions.setLoading(false));
@@ -1124,15 +1123,11 @@ export function importCSV(file: File) {
                 const bitrateDescription = bitrate === '' ? '' : ` (${bitrate} kbps)`;
                 const actualBitrateDescription =
                     currentTrackEncoding.bitrate === undefined ? '' : ` (${currentTrackEncoding.bitrate} kbps)`;
+                const describedDuration = secondsToHumanReadable(duration);
+                const actualDuration = secondsToHumanReadable(ungroupedTracks[index - 1].duration);
                 if (
                     !window.confirm(
-                        `
-                    The CSV file describes track ${index} as a ${secondsToHumanReadable(
-                        duration
-                    )} ${codec}${bitrateDescription} track. The actual track ${index} is a ${secondsToHumanReadable(
-                        ungroupedTracks[index - 1].duration
-                    )} ${currentTrackEncoding.codec}${actualBitrateDescription} track. Label it according to the file?
-                        `.trim()
+                        `The CSV file describes track ${index} as a ${describedDuration} ${codec}${bitrateDescription} track. The actual track ${index} is a ${actualDuration} ${currentTrackEncoding.codec}${actualBitrateDescription} track. Label it according to the file?`
                     )
                 ) {
                     continue;
@@ -1518,12 +1513,12 @@ export function convertAndUpload(
 
         const updateTitle = () => {
             if (totalBytesAllTracks === 0) {
-                document.title = `Converting | ${originalTitle}`;
+                setAppTitle(`Converting | ${originalTitle}`);
                 return;
             }
 
             const percentage = Math.floor((100 * (bytesSentFromThisTrack + bytesSentFromPrevTracks)) / totalBytesAllTracks);
-            document.title = `${percentage}% complete | Upload | ${originalTitle}`;
+            setAppTitle(`${percentage}% complete | Upload | ${originalTitle}`);
         };
 
         const hasUploadBeenCancelled = () => {
@@ -1541,7 +1536,7 @@ export function convertAndUpload(
             if (!hasNotificationSupport || !notifyWhenFinished) {
                 return;
             }
-            const notification = new Notification('MiniDisc recording completed', {
+            const notification = new Notification(translateString('MiniDisc recording completed'), {
                 icon: NotificationCompleteIconUrl,
             });
             notification.onclick = function () {
@@ -1748,7 +1743,7 @@ export function convertAndUpload(
             netmdFactoryService!.enableMonoUpload(false);
         }
 
-        document.title = originalTitle;
+        setAppTitle(originalTitle);
 
         let actionToDispatch: UnknownAction[] = [uploadDialogActions.setVisible(false)];
 

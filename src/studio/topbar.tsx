@@ -67,16 +67,16 @@ export function StudioTopbar({
             </div>
             <nav className="mdb-nav">
                 <button type="button" className={'mdb-nav-item' + (view === 'WELCOME' ? ' active' : '')} onClick={goHome}>
-                    Accueil
+                    Home
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openLibrary}>
-                    Bibliothèque
+                    Library
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openSettings}>
-                    Paramètres
+                    Settings
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openHelp}>
-                    Aide
+                    Help
                 </button>
             </nav>
             <div className="mdb-spacer" />
@@ -84,18 +84,18 @@ export function StudioTopbar({
                 <span className={'mdb-dot' + (connected ? '' : ' off')} />
                 {connected ? (
                     <>
-                        <strong>{deviceName || 'Appareil'}</strong> connecté
+                        <strong>{deviceName || 'Device'}</strong>{' connected'}
                     </>
                 ) : (
-                    'Aucun appareil connecté'
+                    'No device connected'
                 )}
             </div>
             {connected && (
-                <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Fermer la session USB (recommandé)">
-                    Déconnecter
+                <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Close the USB session (recommended)">
+                    Disconnect
                 </button>
             )}
-            <button type="button" className="mdb-pill mdb-lang" onClick={toggleLanguage} title="Langue : Français / English">
+            <button type="button" className="mdb-pill mdb-lang" onClick={toggleLanguage} title="Language: French / English">
                 {french ? 'FR' : 'EN'}
             </button>
             <div className="mdb-menu-slot">
