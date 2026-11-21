@@ -319,10 +319,10 @@ export const SongRecognitionDialog = (props: {}) => {
                         align="center"
                     >
                         To use this functionality you either need to import a{' '}
-                        <Link href="https://raw.githubusercontent.com/asivery/webminidisc/master/webminidisc-song-recognition.user.js">
+                        <Link href="https://raw.githubusercontent.com/allscratch/MiniDiscBurner/master/webminidisc-song-recognition.user.js">
                             userscript
                         </Link>{' '}
-                        or use <Link href="https://github.com/asivery/ElectronWMD">ElectronWMD</Link> instead.
+                        or use <Link href="https://github.com/allscratch/MiniDiscBurner-Desktop">MiniDiscBurner Desktop</Link> instead.
                     </Typography>
 
                     <FormControl>

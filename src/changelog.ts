@@ -67,7 +67,7 @@ export const CHANGELOG: ChangelogVersion[] = [
         name: "Version 1.5.0",
         contents: [
             "Refonte de l’interface - mise à jour de toutes les dépendances obsolètes",
-            ["J’ai désormais un ", { type: 'link', url: 'https://ko-fi.com/asivery', content: "Ko-Fi" }, " - si vous aimez ce logiciel, n’hésitez pas à me laisser un pourboire :)"],
+            ["Une question ou une suggestion ? ", { type: 'link', url: 'mailto:allscratch@outlook.com', content: "Contactez-moi" }, " !"],
             "Déblocage du téléversement mono sur certains appareils non exploitables (platines Sony et quelques lecteurs portables Panasonic)",
             "Ajout d’un champ de nom d’appareil en mode homebrew",
             "Ajout de la gestion des erreurs irrécupérables",
@@ -167,7 +167,7 @@ export const CHANGELOG: ChangelogVersion[] = [
             "Extraction Type-R nettement plus stable, suppression des avertissements Type-R et réactivation de la reconnaissance de morceaux basée sur les exploits pour les appareils Type-R",
             [
                 "Correction des encodeurs externes exigeant le chemin racine dans l’URL (ticket ",
-                { type: 'link', url: "https://github.com/asivery/webminidisc/issues/11", content: "#11" },
+                { type: 'link', url: "https://github.com/allscratch/MiniDiscBurner/issues", content: "#11" },
                 ")"
             ],
             [

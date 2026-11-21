@@ -197,7 +197,7 @@ export const Services: ServicePrototype[] = [
             if (window.native?.himdFullInterface) {
                 return window.native?.himdFullInterface;
             }
-            if (!confirm('Warning: For Full HiMD mode, it is recommended to use ElectronWMD instead! Continue?')) {
+            if (!confirm('Warning: For Full HiMD mode, it is recommended to use MiniDiscBurner Desktop instead! Continue?')) {
                 return null;
             }
             return new HiMDFullService({ debug: true });

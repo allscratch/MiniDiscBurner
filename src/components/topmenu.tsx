@@ -22,7 +22,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Refresh as RefreshIcon } from '@mui/icons-material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import { GitHub as GitHubIcon } from '@mui/icons-material'
-import { MonetizationOn as DonateIcon } from '@mui/icons-material'
+import { Mail as ContactIcon } from '@mui/icons-material'
 import { DeleteForever as DeleteForeverIcon } from '@mui/icons-material'
 import { BugReport as BugReportIcon } from '@mui/icons-material'
 import { ExitToApp as ExitToAppIcon } from '@mui/icons-material'
@@ -88,7 +88,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
     const fullWidthDiscTitle = useShallowEqualSelector((state) => state.main.disc?.fullWidthTitle ?? ``);
 
     const githubLinkRef = React.useRef<null | HTMLAnchorElement>(null);
-    const donateLinkRef = React.useRef<null | HTMLAnchorElement>(null);
+    const contactLinkRef = React.useRef<null | HTMLAnchorElement>(null);
     const hiddenFileInputRef = React.useRef<null | HTMLInputElement>(null);
     const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
     const [shortcutsAnchorEl, setShortcutsAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -208,12 +208,12 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         [handleMenuClose]
     );
 
-    const handleDonateLink = useCallback(
+    const handleContactLink = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
-            if (event.target !== donateLinkRef.current) {
+            if (event.target !== contactLinkRef.current) {
                 // Prevent opening the link twice
-                donateLinkRef.current?.click();
+                contactLinkRef.current?.click();
             }
             handleMenuClose();
         },
@@ -590,19 +590,13 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         </MenuItem>
     );
     menuItems.push(
-        <MenuItem key="donate" onClick={handleDonateLink}>
+        <MenuItem key="contact" onClick={handleContactLink}>
             <ListItemIcon className={classes.listItemIcon}>
-                <DonateIcon fontSize="small" />
+                <ContactIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>
-                <Link
-                    rel="noopener noreferrer"
-                    href="https://ko-fi.com/asivery"
-                    target="_blank"
-                    ref={donateLinkRef}
-                    onClick={handleDonateLink}
-                >
-                    Donate
+                <Link rel="noopener noreferrer" href="mailto:allscratch@outlook.com" ref={contactLinkRef} onClick={handleContactLink}>
+                    Contact
                 </Link>
             </ListItemText>
         </MenuItem>

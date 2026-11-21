@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         Web Minidisc Song Recognition Enabler
-// @description  This userscript lets you use the Song Recognition functionality of Web Minidisc Pro without ElectronWMD
+// @name         MiniDiscBurner Song Recognition Enabler
+// @description  Permet d'utiliser la reconnaissance de morceaux de MiniDiscBurner dans le navigateur, sans l'application desktop
 // @version      0.1.0
 // @namespace    http://tampermonkey.net/
-// @author       Asivery
-// @match        https://web.minidisc.wiki/
-// @match        https://testing.minidisc.wiki/webminidisc-testing/
+// @author       Asivery (adapté pour MiniDiscBurner)
+// @match        http://localhost:5173/*
+// @match        http://127.0.0.1:5173/*
 // @grant        GM.xmlHttpRequest
 // @grant        unsafeWindow
 // @run-at       document-start
@@ -27,5 +27,5 @@
                     rej(error)
             })
         })};
-    console.log("[Userscript]: Attached ElectronWMD's fetch method successfully!");
+    console.log("[Userscript]: Attached MiniDiscBurner's fetch method successfully!");
 })();

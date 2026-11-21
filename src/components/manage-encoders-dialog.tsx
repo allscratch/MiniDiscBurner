@@ -85,7 +85,7 @@ export const ManageEncodersDialog = (props: {}) => {
             const contents = new Uint8Array(buffer);
             const sarSubMagic = SARFile.readSubMagicOfArchve(contents);
             if(sarSubMagic !== DYNAMIC_ENCODER_SAR_SUBMAGIC) {
-                window.alert(`Not a valid Web MiniDisc Encoder: ${file?.name}`);
+                window.alert(`Not a valid MiniDiscBurner encoder: ${file?.name}`);
                 continue;
             }
             // Since we don't have any encoders which have dependencies yet, it's possible
