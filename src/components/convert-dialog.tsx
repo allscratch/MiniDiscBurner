@@ -942,6 +942,8 @@ export const ConvertDialog = (props: { files: (File | AdaptiveFile)[] }) => {
             TransitionComponent={Transition as any}
             aria-labelledby="convert-dialog-slide-title"
             aria-describedby="convert-dialog-slide-description"
+            PaperProps={{ className: 'mdb-convert-dialog' }}
+            BackdropProps={{ className: 'mdb-convert-backdrop' }}
             classes={{ paper: cx({ [classes.himdDialog]: usesHimdTitles }) }}
         >
             <DialogTitle id="convert-dialog-slide-title">Upload Settings</DialogTitle>

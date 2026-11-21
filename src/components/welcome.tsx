@@ -348,9 +348,9 @@ export const Welcome = (props: {}) => {
                                 </div>
 
                                 {pairingFailed && (
-                                    <FormControl error={true}>
-                                        <FormHelperText>{pairingMessage}</FormHelperText>
-                                    </FormControl>
+                                    <div className="mdb-connect-hint" role="status">
+                                        Please connect your device
+                                    </div>
                                 )}
                                 {!window.native?.interface && (
                                     <Tooltip

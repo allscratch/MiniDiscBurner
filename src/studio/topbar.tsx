@@ -5,7 +5,6 @@ import { disconnect, openLocalLibrary } from '../redux/actions';
 import { setFrenchEnabled } from '../i18n/runtime';
 import { TopMenu } from '../components/topmenu';
 
-const GUIDE_URL = 'https://www.minidisc.wiki/guides/webminidisc';
 const LANGUAGE_EVENT = 'mdb-language-change';
 
 function readFrench(): boolean {
@@ -45,7 +44,7 @@ export function StudioTopbar({
     const openStudio = useCallback(() => dispatch(appActions.setMainView('MAIN')), [dispatch]);
     const openSettings = useCallback(() => dispatch(appActions.setMainView('SETTINGS')), [dispatch]);
     const openLibrary = useCallback(() => dispatch(openLocalLibrary()), [dispatch]);
-    const openHelp = useCallback(() => window.open(GUIDE_URL, '_blank', 'noopener,noreferrer'), []);
+    const openHelp = useCallback(() => dispatch(appActions.setMainView('HELP')), [dispatch]);
     const handleDisconnect = useCallback(() => dispatch(disconnect()), [dispatch]);
     const goHome = useCallback(() => {
         if (view === 'FACTORY') {
@@ -83,7 +82,11 @@ export function StudioTopbar({
                 >
                     Settings
                 </button>
-                <button type="button" className="mdb-nav-item" onClick={openHelp}>
+                <button
+                    type="button"
+                    className={'mdb-nav-item' + (view === 'HELP' ? ' active' : '')}
+                    onClick={openHelp}
+                >
                     Help
                 </button>
             </nav>
@@ -95,7 +98,7 @@ export function StudioTopbar({
                         <strong>{deviceName || 'Device'}</strong>{' connected'}
                     </>
                 ) : (
-                    'No device connected'
+                    'Please connect your device'
                 )}
             </div>
             {connected && (

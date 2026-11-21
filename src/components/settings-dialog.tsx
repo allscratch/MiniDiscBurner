@@ -3,7 +3,6 @@ import { batchActions, useDispatch } from '../frontend-utils';
 import { forAnyDesktop, forWideDesktop, useShallowEqualSelector } from '../frontend-utils';
 
 import { actions as appActions } from '../redux/app-feature';
-import { setFrenchEnabled } from '../i18n/runtime';
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -20,8 +19,6 @@ import { LibraryServices } from '../services/library-services';
 import { EncoderStorageManager } from '../services/audio/apiv1/dynamic-encoders';
 import { AudioEncoderV1Metadata } from '../services/audio/apiv1/external-interface';
 import serviceRegistry from '../services/registry';
-
-const LANGUAGE_EVENT = 'mdb-language-change';
 
 function deepCompare<T>(a: T, b: T) {
     if (typeof a !== 'object') {
@@ -144,7 +141,7 @@ export const SettingsContent = () => {
     const { classes } = useStyles();
 
     // Apparence
-    const { colorTheme, pageFullHeight, pageFullWidth, vintageMode } = useShallowEqualSelector((state) => state.appState);
+    const { colorTheme, vintageMode } = useShallowEqualSelector((state) => state.appState);
 
     // Fonctionnalités
     const { fullWidthSupport } = useShallowEqualSelector((state) => state.appState);
@@ -169,13 +166,6 @@ export const SettingsContent = () => {
     const [currentLibraryService, setCurrentLibraryService] = useState(globalStateLibraryService);
     const [currentLibraryServiceConfig, setLibraryServiceConfig] = useState(globalStateLibraryServiceConfig);
     const [availableEncoderServices, setAvailableEncoderServices] = useState<AudioEncoderV1Metadata[]>([]);
-    const [french, setFrench] = useState(() => {
-        try {
-            return localStorage.getItem('mdb-language') !== 'en';
-        } catch {
-            return true;
-        }
-    });
     const currentService =
         currentExportServiceId && EncoderStorageManager.INSTANCE.hasEncoder(currentExportServiceId)
             ? EncoderStorageManager.INSTANCE.getEncoderMetadata(currentExportServiceId)
@@ -223,20 +213,9 @@ export const SettingsContent = () => {
         (event: any) => dispatch(appActions.setDarkMode(event.target.value as any)),
         [dispatch]
     );
-    const handlePageFullHeightChange = useCallback(() => {
-        dispatch(appActions.setPageFullHeight(!pageFullHeight));
-    }, [dispatch, pageFullHeight]);
-    const handlePageFullWidthChange = useCallback(() => {
-        dispatch(appActions.setPageFullWidth(!pageFullWidth));
-    }, [dispatch, pageFullWidth]);
     const handleToggleVintageMode = useCallback(() => {
         dispatch(appActions.setVintageMode(!vintageMode));
     }, [dispatch, vintageMode]);
-    const handleLanguage = useCallback((next: boolean) => {
-        setFrench(next);
-        setFrenchEnabled(next);
-        window.dispatchEvent(new CustomEvent(LANGUAGE_EVENT, { detail: next }));
-    }, []);
 
     // Fonctionnalités
     const handleToggleFullWidth = useCallback(() => {
@@ -312,22 +291,6 @@ export const SettingsContent = () => {
                 </SimpleField>
                 <SimpleField name="Retro Mode (beta)" description="Windows 95-inspired vintage interface" classes={classes}>
                     <Switch checked={vintageMode} onChange={handleToggleVintageMode} />
-                </SimpleField>
-                <SimpleField name="Language" description="Français / English" classes={classes}>
-                    <span className="mdb-seg">
-                        <button type="button" className={french ? 'on' : ''} onClick={() => handleLanguage(true)}>
-                            FR
-                        </button>
-                        <button type="button" className={!french ? 'on' : ''} onClick={() => handleLanguage(false)}>
-                            EN
-                        </button>
-                    </span>
-                </SimpleField>
-                <SimpleField name="Stretch to fill the screen vertically" description="Fill the available height" classes={classes}>
-                    <Switch checked={pageFullHeight} onChange={handlePageFullHeightChange} />
-                </SimpleField>
-                <SimpleField name="Stretch to fill the screen horizontally" description="Fill the available width" classes={classes}>
-                    <Switch checked={pageFullWidth} onChange={handlePageFullWidthChange} />
                 </SimpleField>
                 <NativeFields classes={classes} section="Appearance" />
             </section>

@@ -4,7 +4,7 @@ import { CustomParameters } from '../custom-parameters';
 import { filterOutCorrupted, getSimpleServices, ServiceConstructionInfo } from '../services/interface-service-manager';
 import { savePreference, loadPreference } from '../utils';
 
-export type Views = 'WELCOME' | 'MAIN' | 'FACTORY' | 'SETTINGS';
+export type Views = 'WELCOME' | 'MAIN' | 'FACTORY' | 'SETTINGS' | 'HELP';
 
 const REDESIGN_THEME_KEY = 'mdb-redesign-dark-v1';
 

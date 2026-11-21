@@ -459,6 +459,7 @@ export const FR: Record<string, string> = {
   "Device": "Appareil",
   "NetMD recorder": "Enregistreur NetMD",
   "No device connected": "Aucun appareil connecté",
+  "Please connect your device": "Veuillez connecter votre appareil",
   "Ready to connect": "Prêt à connecter",
   "Disc loaded": "Disque chargé",
   "No disc loaded": "Aucun disque chargé",
@@ -498,6 +499,19 @@ export const FR: Record<string, string> = {
   "Atracdenc or remote encoder": "Atracdenc ou encodeur distant",
   "Local files or remote library": "Fichiers locaux ou bibliothèque distante",
   "MiniDiscBurner 1.0 · Web MiniDisc Pro 1.6.2": "MiniDiscBurner 1.0 · Web MiniDisc Pro 1.6.2",
+
+  // Écran « Aide » intégré à la page (preview atmosphérique)
+  "Getting started": "Premiers pas",
+  "Connect a NetMD recorder with a Chromium browser, add your files and start the recording.": "Connectez un enregistreur NetMD avec un navigateur Chromium, ajoutez vos fichiers puis lancez l’enregistrement.",
+  "Upload settings": "Paramètres de téléversement",
+  "Resources": "Ressources",
+  "Help and community": "Aide & communauté",
+  "Documentation, frequently asked questions and links to the original projects.": "Documentation, questions fréquentes et liens vers les projets d’origine.",
+  "FAQ": "FAQ",
+  "Documentation": "Documentation",
+  "GitHub": "GitHub",
+  "Discord": "Discord",
+  "Personal fork of Web MiniDisc Pro 1.6.2, built on netmd-js and ElectronWMD.": "Fork personnel de Web MiniDisc Pro 1.6.2, construit sur netmd-js et ElectronWMD.",
 
   // Audit complet : écrans, boîtes natives et attributs encore anglais
   "Step 1 · Connection": "Étape 1 · Connexion",

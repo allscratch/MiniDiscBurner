@@ -88,7 +88,6 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
     const fullWidthDiscTitle = useShallowEqualSelector((state) => state.main.disc?.fullWidthTitle ?? ``);
 
     const githubLinkRef = React.useRef<null | HTMLAnchorElement>(null);
-    const helpLinkRef = React.useRef<null | HTMLAnchorElement>(null);
     const donateLinkRef = React.useRef<null | HTMLAnchorElement>(null);
     const hiddenFileInputRef = React.useRef<null | HTMLInputElement>(null);
     const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -181,24 +180,28 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         handleMenuClose();
     }, [dispatch, handleMenuClose]);
 
+    // Aide intégrée à la page : aucun dialogue natif ni nouvelle fenêtre.
+    const handleOpenHelp = useCallback(
+        (section?: string) => {
+            dispatch(appActions.setMainView('HELP'));
+            handleMenuClose();
+            if (section) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        document.getElementById(section)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    });
+                });
+            }
+        },
+        [dispatch, handleMenuClose]
+    );
+
     const handleGithubLink = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
             if (event.target !== githubLinkRef.current) {
                 // Prevent opening the link twice
                 githubLinkRef.current?.click();
-            }
-            handleMenuClose();
-        },
-        [handleMenuClose]
-    );
-
-    const handleHelpLink = useCallback(
-        (event: React.MouseEvent<HTMLElement>) => {
-            event.stopPropagation();
-            if (event.target !== helpLinkRef.current) {
-                // Prevent opening the link twice
-                helpLinkRef.current?.click();
             }
             handleMenuClose();
         },
@@ -529,7 +532,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         menuItems.push(<Divider key="feature-divider" />);
     }
     menuItems.push(
-        <MenuItem key="about" onClick={handleShowAbout}>
+        <MenuItem key="about" onClick={() => handleOpenHelp('mdb-about-credits')}>
             <ListItemIcon className={classes.listItemIcon}>
                 <InfoIcon fontSize="small" />
             </ListItemIcon>
@@ -537,7 +540,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         </MenuItem>
     );
     menuItems.push(
-        <MenuItem key="changelog" onClick={handleShowChangelog}>
+        <MenuItem key="changelog" onClick={() => handleOpenHelp('mdb-changelog-inline')}>
             <ListItemIcon className={classes.listItemIcon}>
                 <InfoIcon fontSize="small" />
             </ListItemIcon>
@@ -545,21 +548,11 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
         </MenuItem>
     );
     menuItems.push(
-        <MenuItem key="support" onClick={handleHelpLink}>
+        <MenuItem key="support" onClick={() => handleOpenHelp()}>
             <ListItemIcon className={classes.listItemIcon}>
                 <HelpIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>
-                <Link
-                    rel="noopener noreferrer"
-                    href="https://www.minidisc.wiki/guides/start"
-                    target="_blank"
-                    ref={helpLinkRef}
-                    onClick={handleHelpLink}
-                >
-                    Support and FAQ
-                </Link>
-            </ListItemText>
+            <ListItemText>Support and FAQ</ListItemText>
         </MenuItem>
     );
     menuItems.push(

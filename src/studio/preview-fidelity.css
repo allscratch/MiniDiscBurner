@@ -644,6 +644,286 @@ html body {
     opacity: 1;
 }
 
+/* Alignement des tuiles -------------------------------------------------- */
+.mdb-shell .mdb-settings-grid {
+    align-items: stretch;
+}
+
+.mdb-shell .mdb-settings-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.mdb-shell .mdb-settings-card > .mdb-setting-row:last-child,
+.mdb-shell .mdb-settings-card > :last-child {
+    border-bottom: 0;
+}
+
+.mdb-shell .mdb-hero:not(.mdb-hero-single) .mdb-transfer-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.mdb-shell .mdb-hero:not(.mdb-hero-single) .mdb-transfer-card .mdb-formats {
+    margin-top: auto;
+}
+
+.mdb-shell .mdb-connect-hint {
+    margin-top: 12px;
+    color: rgba(251, 234, 218, 0.72);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    line-height: 1.55;
+}
+
+/* Écran Aide intégré ----------------------------------------------------- */
+.mdb-shell .mdb-help-screen {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.mdb-shell .mdb-help-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+}
+
+.mdb-shell .mdb-help-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 24px;
+}
+
+.mdb-shell .mdb-help-card h2 {
+    margin: 0 0 10px;
+    color: #fbeada;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1.16;
+}
+
+.mdb-shell .mdb-help-card p {
+    margin: 0 0 14px;
+    color: rgba(251, 234, 218, 0.72);
+    font-size: 12px;
+}
+
+.mdb-shell .mdb-help-link {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fbeada;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.55;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mdb-shell .mdb-help-link:hover {
+    border-color: rgba(255, 200, 80, 0.35);
+    background: rgba(255, 200, 80, 0.14);
+    color: #ffc850;
+}
+
+.mdb-shell .mdb-help-credits {
+    padding: 18px 24px;
+    color: rgba(251, 234, 218, 0.66);
+    font-size: 11px;
+    line-height: 1.8;
+    scroll-margin-top: 24px;
+}
+
+.mdb-shell .mdb-help-changelog {
+    padding: 22px 24px;
+    scroll-margin-top: 24px;
+}
+
+.mdb-shell .mdb-changelog-inline {
+    max-height: 420px;
+    overflow: auto;
+    color: rgba(251, 234, 218, 0.78);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.mdb-shell .mdb-changelog-version h4 {
+    margin: 14px 0 6px;
+    color: #ffc850;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.mdb-shell .mdb-changelog-version:first-child h4 {
+    margin-top: 0;
+}
+
+.mdb-shell .mdb-changelog-inline ul {
+    margin: 0 0 12px;
+    padding-left: 18px;
+}
+
+.mdb-shell .mdb-changelog-inline code {
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.mdb-shell .mdb-changelog-inline a {
+    color: #ffc850;
+    text-decoration: none;
+}
+
+/* Modale « Paramètres de téléversement » -------------------------------- */
+.mdb-convert-backdrop.MuiBackdrop-root {
+    background: rgba(12, 9, 12, 0.58);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.mdb-convert-dialog.MuiPaper-root {
+    width: min(560px, 100%);
+    max-height: 88vh;
+    overflow: auto;
+    padding: 26px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 20px;
+    background: rgba(29, 22, 23, 0.96);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(20px) saturate(1.25);
+    backdrop-filter: blur(20px) saturate(1.25);
+    color: #fbeada;
+    font: 15px/1.55 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.mdb-convert-dialog .MuiDialogTitle-root {
+    padding: 0 0 18px;
+    color: #fbeada;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.mdb-convert-dialog .MuiDialogContent-root {
+    gap: 14px;
+    padding: 0;
+}
+
+.mdb-convert-dialog .MuiTypography-caption,
+.mdb-convert-dialog .MuiFormLabel-root {
+    color: rgba(251, 234, 218, 0.6) !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+    font-size: 9px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1.2px !important;
+    line-height: 1.55 !important;
+    text-transform: uppercase !important;
+}
+
+.mdb-convert-dialog .MuiFormControl-root {
+    min-width: 0;
+}
+
+.mdb-convert-dialog .MuiToggleButtonGroup-root {
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background: rgba(29, 22, 23, 0.38);
+}
+
+.mdb-convert-dialog .MuiToggleButton-root {
+    padding: 6px 11px;
+    border: 0;
+    border-radius: 7px;
+    color: rgba(251, 234, 218, 0.7);
+    font-size: 11px;
+    text-transform: none;
+}
+
+.mdb-convert-dialog .MuiToggleButton-root.Mui-selected {
+    background: rgba(255, 200, 80, 0.2);
+    color: #ffc850;
+}
+
+.mdb-convert-dialog .MuiInputBase-root,
+.mdb-convert-dialog .MuiSelect-select {
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    background: rgba(29, 22, 23, 0.5);
+    color: #fbeada;
+    font-size: 13px;
+}
+
+.mdb-convert-dialog .MuiInputBase-input {
+    padding: 0;
+}
+
+.mdb-convert-dialog .MuiAccordion-root {
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    background: transparent;
+    color: #fbeada;
+}
+
+.mdb-convert-dialog .MuiAccordionSummary-root {
+    min-height: 40px;
+}
+
+.mdb-convert-dialog .MuiToolbar-root {
+    background: rgba(255, 200, 80, 0.12);
+}
+
+.mdb-convert-dialog .MuiIconButton-root {
+    color: rgba(251, 234, 218, 0.82);
+}
+
+.mdb-convert-dialog .MuiDialogActions-root {
+    gap: 10px;
+    padding: 24px 0 0;
+}
+
+.mdb-convert-dialog .MuiDialogActions-root .MuiButton-root {
+    min-height: 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+}
+
+.mdb-convert-dialog .MuiDialogActions-root .MuiButton-root:not(:last-child) {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fbeada;
+}
+
+.mdb-convert-dialog .MuiDialogActions-root .MuiButton-root:last-child {
+    background: #ffc850;
+    color: #241a12;
+    font-weight: 750;
+    box-shadow: 0 10px 26px rgba(255, 200, 80, 0.24);
+}
+
+.mdb-convert-dialog .MuiDialogActions-root .MuiButton-root:last-child:hover {
+    background: #ffc850;
+    filter: brightness(1.07);
+}
+
 @media (max-width: 820px) {
     .mdb-shell {
         padding: 0 14px 34px;
@@ -665,5 +945,11 @@ html body {
     }
     .mdb-shell .mdb-card-content {
         padding: 22px 20px;
+    }
+    .mdb-shell .mdb-help-grid {
+        grid-template-columns: 1fr;
+    }
+    .mdb-convert-dialog.MuiPaper-root {
+        padding: 20px;
     }
 }

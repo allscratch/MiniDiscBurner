@@ -17,6 +17,7 @@ import { EncoderDownloadDialog } from './encoder-download-dialog';
 import { StudioTopbar } from '../studio/topbar';
 import { AtmosphereBackdrop, AtmosphereSwatches } from '../studio/atmosphere';
 import SettingsScreen from '../studio/settings-screen';
+import HelpScreen from '../studio/help-screen';
 import '../studio/studio.css';
 import '../studio/atmosphere.css';
 import '../studio/settings.css';
@@ -48,9 +49,6 @@ const useStyles = makeStyles()((theme) => ({
         background: 'transparent',
         boxShadow: 'none',
     },
-    paperShowsList: {},
-    paperFullHeight: {},
-    layoutFullWidth: {},
     bottomBar: {
         display: 'flex',
         alignItems: 'center',
@@ -268,8 +266,8 @@ const lightTheme = createTheme({
 });
 
 const InternalApp = () => {
-    const { mainView, loading, pageFullHeight, pageFullWidth, deviceConnected } = useShallowEqualSelector((state) => state.appState);
-    const { deviceCapabilities, deviceName } = useShallowEqualSelector((state) => state.main);
+    const { mainView, loading, deviceConnected } = useShallowEqualSelector((state) => state.appState);
+    const { deviceName } = useShallowEqualSelector((state) => state.main);
     const { classes, cx } = useStyles();
     const dispatch = useDispatch();
 
@@ -289,20 +287,16 @@ const InternalApp = () => {
                     </Backdrop>
                 }
             >
-                <main className={cx(classes.layout, 'mdb-shell', { [classes.layoutFullWidth]: pageFullWidth })}>
+                <main className={cx(classes.layout, 'mdb-shell')}>
                     <AtmosphereBackdrop />
                     <div className="mdb-shell-inner">
                         <StudioTopbar view={mainView} deviceName={deviceName} connected={deviceConnected} />
-                        <Paper
-                            className={cx(classes.paper, 'mdb-paper', {
-                                [classes.paperShowsList]: deviceCapabilities.includes(0 /*Capability.listContent*/),
-                                [classes.paperFullHeight]: pageFullHeight,
-                            })}
-                        >
+                        <Paper className={cx(classes.paper, 'mdb-paper')}>
                             {mainView === 'WELCOME' ? <Welcome /> : null}
                             {mainView === 'MAIN' ? <Main /> : null}
                             {mainView === 'FACTORY' ? <Toc /> : null}
                             {mainView === 'SETTINGS' ? <SettingsScreen /> : null}
+                            {mainView === 'HELP' ? <HelpScreen /> : null}
 
                             {mainView === 'MAIN' ? (
                                 <Box className={cx(classes.controlsContainer, 'mdb-controls')}>
