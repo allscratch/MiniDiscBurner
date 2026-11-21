@@ -32,7 +32,6 @@ import {
 } from '../services/interface-service-manager';
 
 import { OtherDeviceDialog } from './other-device-dialog';
-import { SettingsDialog } from './settings-dialog';
 import { ChangelogDialog } from './changelog-dialog';
 import { AboutDialog } from './about-dialog';
 
@@ -425,7 +424,6 @@ export const Welcome = (props: {}) => {
                     </section>
                 </div>
             )}
-            <SettingsDialog />
             <ManageEncodersDialog />
             <AboutDialog />
             <ChangelogDialog />

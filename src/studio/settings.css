@@ -1,0 +1,176 @@
+/* Écran « Paramètres » intégré à la page + correctifs d'espacement du studio.
+   Chargé après atmosphere.css : les valeurs ci-dessous prennent le pas. */
+
+/* Studio : les surfaces s'enchaînent sans se chevaucher ------------------ */
+.mdb-shell .mdb-hero {
+    display: grid;
+    grid-template-columns: 0.85fr 1.35fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.mdb-shell .mdb-track-card {
+    margin-top: 0;
+}
+
+.mdb-shell .mdb-paper.MuiPaper-root {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mdb-shell .mdb-controls {
+    margin-top: 0;
+}
+
+/* Écran Paramètres ------------------------------------------------------- */
+.mdb-shell .mdb-settings-screen {
+    width: 100%;
+    padding-bottom: 8px;
+}
+
+.mdb-shell .mdb-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.mdb-shell .mdb-settings-card {
+    padding: 24px 26px;
+    min-width: 0;
+}
+
+.mdb-shell .mdb-settings-title {
+    margin: 0 0 6px;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--mdb-cream);
+}
+
+.mdb-shell .mdb-setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mdb-shell .mdb-settings-card > :last-child {
+    border-bottom: 0;
+}
+
+.mdb-shell .mdb-setting-label {
+    display: block;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.mdb-shell .mdb-setting-label b {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--mdb-cream);
+}
+
+.mdb-shell .mdb-setting-label small {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    line-height: 1.35;
+    color: rgba(251, 234, 218, 0.55);
+}
+
+.mdb-shell .mdb-setting-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    max-width: 52%;
+    gap: 8px;
+}
+
+.mdb-shell .mdb-setting-control .MuiSelect-root,
+.mdb-shell .mdb-setting-control .MuiInputBase-root {
+    color: var(--mdb-cream);
+    font-size: 13px;
+}
+
+.mdb-shell .mdb-setting-control .MuiButton-root {
+    min-height: 34px;
+    padding: 5px 14px;
+    border: 1px solid rgba(255, 200, 80, 0.45);
+    border-radius: 9px;
+    color: var(--mdb-sun);
+    font-size: 12px;
+    text-transform: none;
+}
+
+.mdb-shell .mdb-setting-control .MuiButton-root:hover {
+    background: rgba(255, 200, 80, 0.14);
+}
+
+.mdb-shell .mdb-setting-control .MuiSwitch-root {
+    flex: 0 0 auto;
+}
+
+.mdb-shell .mdb-seg {
+    display: inline-flex;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.mdb-shell .mdb-seg button {
+    min-width: 44px;
+    min-height: 32px;
+    padding: 4px 12px;
+    border: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+    background: transparent;
+    color: rgba(251, 234, 218, 0.72);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.mdb-shell .mdb-seg button:last-child {
+    border-right: 0;
+}
+
+.mdb-shell .mdb-seg button.on,
+.mdb-shell .mdb-seg button:hover {
+    background: rgba(255, 200, 80, 0.18);
+    color: var(--mdb-sun);
+}
+
+.mdb-shell .mdb-settings-card .mdb-pill {
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .mdb-shell .mdb-settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 820px) {
+    .mdb-shell .mdb-hero {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .mdb-shell .mdb-paper.MuiPaper-root {
+        gap: 16px;
+    }
+    .mdb-shell .mdb-settings-card {
+        padding: 20px;
+    }
+    .mdb-shell .mdb-setting-control {
+        max-width: 48%;
+    }
+}

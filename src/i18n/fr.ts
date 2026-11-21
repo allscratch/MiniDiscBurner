@@ -477,6 +477,28 @@ export const FR: Record<string, string> = {
   "Wipe disc": "Effacer le disque",
   "Export CSV": "Exporter en CSV",
 
+  // Écran « Paramètres » intégré à la page (preview atmosphérique)
+  "Studio": "Studio",
+  "Light, dark or device theme": "Clair, sombre ou thème de l’appareil",
+  "Windows 95-inspired vintage interface": "Interface vintage inspirée de Windows 95",
+  "Language": "Langue",
+  "Français / English": "Français / Anglais",
+  "Stretch to fill the screen vertically": "Étendre l’interface verticalement",
+  "Fill the available height": "Remplir la hauteur de l’écran",
+  "Stretch to fill the screen horizontally": "Étendre l’interface horizontalement",
+  "Fill the available width": "Remplir la largeur de l’écran",
+  "Hiragana and Kanji alphabets": "Hiragana et Kanji",
+  "Ask for confirmation before writing": "Demander confirmation avant écriture",
+  "May increase memory usage in homebrew mode": "Peut augmenter l’usage mémoire en mode homebrew",
+  "Fixes a lock-up on some Apple ARM Macs": "Corrige un blocage sur certains Mac Apple ARM",
+  "Quick access to homebrew features": "Accès rapide aux fonctions homebrew",
+  "Download raw streams from netmd-exploits": "Télécharger les flux bruts de netmd-exploits",
+  "Expert feature: .NERAW files": "Fonction avancée : fichiers .NERAW",
+  "Local or remote encoder": "Encodeur local ou distant",
+  "Atracdenc or remote encoder": "Atracdenc ou encodeur distant",
+  "Local files or remote library": "Fichiers locaux ou bibliothèque distante",
+  "MiniDiscBurner 1.0 · Web MiniDisc Pro 1.6.2": "MiniDiscBurner 1.0 · Web MiniDisc Pro 1.6.2",
+
   // Audit complet : écrans, boîtes natives et attributs encore anglais
   "Step 1 · Connection": "Étape 1 · Connexion",
   "Step 2 · Device": "Étape 2 · Appareil",

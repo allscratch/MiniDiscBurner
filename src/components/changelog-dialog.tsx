@@ -58,8 +58,9 @@ export const ChangelogDialog = (props: {}) => {
     }, [dispatch]);
 
     const handleOpenEncoderSettings = useCallback(() => {
-        dispatch(appActions.showSettingsDialog(true));
-    }, [dispatch]);
+        handleClose();
+        dispatch(appActions.setMainView('SETTINGS'));
+    }, [dispatch, handleClose]);
 
     const content = useMemo(() => {
         const changelog = [...CHANGELOG];

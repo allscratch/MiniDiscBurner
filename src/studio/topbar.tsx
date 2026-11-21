@@ -42,7 +42,8 @@ export function StudioTopbar({
         window.dispatchEvent(new CustomEvent(LANGUAGE_EVENT, { detail: next }));
     }, [french]);
 
-    const openSettings = useCallback(() => dispatch(appActions.showSettingsDialog(true)), [dispatch]);
+    const openStudio = useCallback(() => dispatch(appActions.setMainView('MAIN')), [dispatch]);
+    const openSettings = useCallback(() => dispatch(appActions.setMainView('SETTINGS')), [dispatch]);
     const openLibrary = useCallback(() => dispatch(openLocalLibrary()), [dispatch]);
     const openHelp = useCallback(() => window.open(GUIDE_URL, '_blank', 'noopener,noreferrer'), []);
     const handleDisconnect = useCallback(() => dispatch(disconnect()), [dispatch]);
@@ -69,10 +70,17 @@ export function StudioTopbar({
                 <button type="button" className={'mdb-nav-item' + (view === 'WELCOME' ? ' active' : '')} onClick={goHome}>
                     Home
                 </button>
+                <button type="button" className={'mdb-nav-item' + (view === 'MAIN' ? ' active' : '')} onClick={openStudio}>
+                    Studio
+                </button>
                 <button type="button" className="mdb-nav-item" onClick={openLibrary}>
                     Library
                 </button>
-                <button type="button" className="mdb-nav-item" onClick={openSettings}>
+                <button
+                    type="button"
+                    className={'mdb-nav-item' + (view === 'SETTINGS' ? ' active' : '')}
+                    onClick={openSettings}
+                >
                     Settings
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openHelp}>

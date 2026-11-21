@@ -1,18 +1,12 @@
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { batchActions, useDispatch } from '../frontend-utils';
 import { forAnyDesktop, forWideDesktop, useShallowEqualSelector } from '../frontend-utils';
 
 import { actions as appActions } from '../redux/app-feature';
+import { setFrenchEnabled } from '../i18n/runtime';
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide, { SlideProps } from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
@@ -27,9 +21,7 @@ import { EncoderStorageManager } from '../services/audio/apiv1/dynamic-encoders'
 import { AudioEncoderV1Metadata } from '../services/audio/apiv1/external-interface';
 import serviceRegistry from '../services/registry';
 
-const Transition = React.forwardRef(function Transition(props: SlideProps, ref: React.Ref<unknown>) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+const LANGUAGE_EVENT = 'mdb-language-change';
 
 function deepCompare<T>(a: T, b: T) {
     if (typeof a !== 'object') {
@@ -48,39 +40,13 @@ function deepCompare<T>(a: T, b: T) {
 }
 
 const useStyles = makeStyles()((theme) => ({
-    main: {
-        [forAnyDesktop(theme)]: {
-            height: 600,
-        },
-        [forWideDesktop(theme)]: {
-            height: 700,
-        },
-    },
-    propertyBox: {
-        display: 'flex',
-        alignItems: 'center',
-        marginRight: 0,
-    },
-    spread: {
-        display: 'block',
-        flexGrow: 1,
-    },
     wider: {
         minWidth: 150,
     },
-    header: {
-        color: theme.palette.primary.main,
-        '&:not(:first-of-type)': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    fieldMargin: {
-        marginLeft: theme.spacing(2),
-    },
     encoderDescription: {
-        marginLeft: theme.spacing(2),
-        marginBottom: theme.spacing(2),
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(1),
+        fontSize: 12,
+        opacity: 0.75,
     },
     marginApply: {
         marginLeft: theme.spacing(2),
@@ -89,42 +55,38 @@ const useStyles = makeStyles()((theme) => ({
     noLeftMargin: {
         marginLeft: 0,
     },
+    main: {
+        [forAnyDesktop(theme)]: {
+            height: 600,
+        },
+        [forWideDesktop(theme)]: {
+            height: 700,
+        },
+    },
 }));
 
+/** Une ligne « paramètre » de la grille (libellé + contrôle), fidèle à la preview. */
 const SimpleField = ({
     children,
     name,
+    description,
     classes,
-    formControl = false,
-    tooltip,
 }: {
     name: string;
-    formControl?: boolean;
     children: ReactElement<any, any>;
     classes: ReturnType<typeof useStyles>['classes'];
-    tooltip?: string;
+    description?: string;
 }) => {
-    const element = formControl ? (
-        <FormControlLabel
-            labelPlacement="start"
-            label={name + ':'}
-            name={name + ':'}
-            control={children}
-            classes={{ root: classes.propertyBox, label: classes.spread }}
-        />
-    ) : (
-        <Box className={classes.propertyBox}>
-            <Typography className={classes.fieldMargin}>{name}:</Typography>
-            <span className={classes.spread} />
-            {children}
-        </Box>
+    const row = (
+        <div className="mdb-setting-row">
+            <span className="mdb-setting-label">
+                <b>{name}</b>
+                {description ? <small>{description}</small> : null}
+            </span>
+            <span className="mdb-setting-control">{children}</span>
+        </div>
     );
-
-    if (tooltip) {
-        return <Tooltip title={tooltip}>{element}</Tooltip>;
-    } else {
-        return element;
-    }
+    return description ? <Tooltip title={description}>{row}</Tooltip> : row;
 };
 
 const NativeFields = ({ section, classes }: { section: string; classes: any }) => {
@@ -145,13 +107,13 @@ const NativeFields = ({ section, classes }: { section: string; classes: any }) =
     return filtered.map((entry) => {
         if (entry.type === 'action') {
             return (
-                <SimpleField name={entry.name} classes={classes} formControl={true} key={entry.family + entry.name}>
+                <SimpleField name={entry.name} classes={classes} key={entry.family + entry.name}>
                     <Button onClick={() => entry.update(true)}>Go</Button>
                 </SimpleField>
             );
         } else if (entry.type === 'boolean') {
             return (
-                <SimpleField name={entry.name} classes={classes} formControl={true} key={entry.family + entry.name}>
+                <SimpleField name={entry.name} classes={classes} key={entry.family + entry.name}>
                     <Switch checked={entry.state as boolean} onChange={(e) => entry.update(!entry.state).then(updateState)} />
                 </SimpleField>
             );
@@ -172,16 +134,19 @@ const NativeFields = ({ section, classes }: { section: string; classes: any }) =
     });
 };
 
-export const SettingsDialog = (props: {}) => {
+/**
+ * Paramètres affichés directement dans la page (écran « Paramètres » de la
+ * barre de navigation), comme dans la preview atmosphérique validée.
+ * Toutes les options historiques de Web MiniDisc Pro sont conservées.
+ */
+export const SettingsContent = () => {
     const dispatch = useDispatch();
     const { classes } = useStyles();
 
-    const visible = useShallowEqualSelector((state) => state.appState.settingsDialogVisible);
+    // Apparence
+    const { colorTheme, pageFullHeight, pageFullWidth, vintageMode } = useShallowEqualSelector((state) => state.appState);
 
-    // Appearance properties
-    const { colorTheme, pageFullHeight, pageFullWidth } = useShallowEqualSelector((state) => state.appState);
-
-    // Functionality properties
+    // Fonctionnalités
     const { fullWidthSupport } = useShallowEqualSelector((state) => state.appState);
     const {
         archiveDiscCreateZip,
@@ -192,7 +157,7 @@ export const SettingsDialog = (props: {}) => {
         manageEncodersDialogVisible,
     } = useShallowEqualSelector((state) => state.appState);
 
-    // Encoder properties
+    // Encodage / bibliothèque
     const {
         audioExportServiceId: globalStateAudioExportServiceId,
         audioExportServiceConfig: globalStateAudioExportServiceConfig,
@@ -204,9 +169,18 @@ export const SettingsDialog = (props: {}) => {
     const [currentLibraryService, setCurrentLibraryService] = useState(globalStateLibraryService);
     const [currentLibraryServiceConfig, setLibraryServiceConfig] = useState(globalStateLibraryServiceConfig);
     const [availableEncoderServices, setAvailableEncoderServices] = useState<AudioEncoderV1Metadata[]>([]);
-    const currentService = currentExportServiceId && EncoderStorageManager.INSTANCE.hasEncoder(currentExportServiceId) ? EncoderStorageManager.INSTANCE.getEncoderMetadata(currentExportServiceId) : null;
+    const [french, setFrench] = useState(() => {
+        try {
+            return localStorage.getItem('mdb-language') !== 'en';
+        } catch {
+            return true;
+        }
+    });
+    const currentService =
+        currentExportServiceId && EncoderStorageManager.INSTANCE.hasEncoder(currentExportServiceId)
+            ? EncoderStorageManager.INSTANCE.getEncoderMetadata(currentExportServiceId)
+            : null;
     const currentLibrary = LibraryServices[currentLibraryService ?? -1];
-
 
     const reloadAvailableEncodersList = useCallback(
         () => setAvailableEncoderServices(EncoderStorageManager.INSTANCE.listAvailableEncodersMetadata()),
@@ -219,25 +193,34 @@ export const SettingsDialog = (props: {}) => {
         reloadAvailableEncodersList();
     }, [globalStateAudioExportServiceId, globalStateAudioExportServiceConfig]);
 
-    // Whenever the dialog is closed / opened, reload the list of the encoders.
     useEffect(() => {
-        if(EncoderStorageManager.INSTANCE) {
+        if (EncoderStorageManager.INSTANCE) {
             reloadAvailableEncodersList();
         }
     }, [manageEncodersDialogVisible]);
 
-    const verifyIfInputsValid = useCallback(() => {
-        // Later more inputs can be added
-        if (!currentService) return true;
-        const canExit = isAllValid(currentService.customParameters, currentExportServiceConfig);
-        return canExit;
-    }, [currentExportServiceConfig, currentService]);
+    const applyAndStoreAudioServiceConfig = useCallback((serviceId: string | null, config: CustomParameters) => {
+        if (!serviceId || !EncoderStorageManager.INSTANCE.hasEncoder(serviceId)) return;
+        const service = EncoderStorageManager.INSTANCE.getEncoderMetadata(serviceId);
+        if (service.customParameters) {
+            if (!isAllValid(service.customParameters, config)) {
+                return;
+            }
+        }
 
-    //Appearance configuration
+        dispatch(
+            batchActions([
+                appActions.setAudioExportServiceId(serviceId),
+                appActions.setAudioExportServiceConfig(config),
+            ])
+        );
+
+        serviceRegistry.audioExportService = EncoderStorageManager.INSTANCE.getEncoder(serviceId, config).instance;
+    }, []);
+
+    // Apparence
     const handleThemeChange = useCallback(
-        (event: any) => {
-            dispatch(appActions.setDarkMode(event.target.value as any));
-        },
+        (event: any) => dispatch(appActions.setDarkMode(event.target.value as any)),
         [dispatch]
     );
     const handlePageFullHeightChange = useCallback(() => {
@@ -246,8 +229,16 @@ export const SettingsDialog = (props: {}) => {
     const handlePageFullWidthChange = useCallback(() => {
         dispatch(appActions.setPageFullWidth(!pageFullWidth));
     }, [dispatch, pageFullWidth]);
+    const handleToggleVintageMode = useCallback(() => {
+        dispatch(appActions.setVintageMode(!vintageMode));
+    }, [dispatch, vintageMode]);
+    const handleLanguage = useCallback((next: boolean) => {
+        setFrench(next);
+        setFrenchEnabled(next);
+        window.dispatchEvent(new CustomEvent(LANGUAGE_EVENT, { detail: next }));
+    }, []);
 
-    // Functionality configuration
+    // Fonctionnalités
     const handleToggleFullWidth = useCallback(() => {
         dispatch(appActions.setFullWidthSupport(!fullWidthSupport));
     }, [dispatch, fullWidthSupport]);
@@ -270,29 +261,12 @@ export const SettingsDialog = (props: {}) => {
         dispatch(appActions.showManageEncodersDialog(true));
     }, [dispatch]);
 
-    const applyAndStoreAudioServiceConfig = useCallback((serviceId: string | null, config: CustomParameters) => {
-        if(!serviceId || !EncoderStorageManager.INSTANCE.hasEncoder(serviceId)) return;
-        const service = EncoderStorageManager.INSTANCE.getEncoderMetadata(serviceId);
-        if(service.customParameters) {
-            if(!isAllValid(service.customParameters, config)) {
-                return;
-            }
-        }
-
-        dispatch(batchActions([
-            appActions.setAudioExportServiceId(serviceId),
-            appActions.setAudioExportServiceConfig(config),
-        ]));
-
-        serviceRegistry.audioExportService = EncoderStorageManager.INSTANCE.getEncoder(serviceId, config).instance;
-    }, []);
-
-    //Encoder configuration
+    // Encodage
     const handleExportServiceChanges = useCallback((event: any) => {
         const serviceId = event.target.value as string;
         setCurrentExportServiceId(serviceId);
         dispatch(appActions.setAudioExportServiceId(serviceId));
-        if(!serviceId || !EncoderStorageManager.INSTANCE.hasEncoder(serviceId)) return;
+        if (!serviceId || !EncoderStorageManager.INSTANCE.hasEncoder(serviceId)) return;
 
         const metadata = EncoderStorageManager.INSTANCE.getEncoderMetadata(serviceId);
         const params = initializeParameters(metadata.customParameters);
@@ -308,6 +282,8 @@ export const SettingsDialog = (props: {}) => {
             return newData;
         });
     }, []);
+
+    // Bibliothèque
     const handleLibraryServiceChanges = useCallback((event: any) => {
         const serviceId = event.target.value as number;
         setCurrentLibraryService(serviceId);
@@ -323,120 +299,129 @@ export const SettingsDialog = (props: {}) => {
         });
     }, []);
 
-    const handleClose = useCallback(() => {
-        dispatch(appActions.showSettingsDialog(false));
-    }, [dispatch]);
-
     return (
-        <Dialog
-            open={visible}
-            maxWidth={'sm'}
-            classes={{ paper: classes.main }}
-            fullWidth={true}
-            TransitionComponent={Transition as any}
-            aria-labelledby="settings-dialog-slide-title"
-        >
-            <DialogTitle id="settings-dialog-slide-title">Settings</DialogTitle>
-            <DialogContent>
-                <DialogContentText className={classes.header}>Appearance</DialogContentText>
-                <SimpleField name="Color theme" classes={classes}>
+        <div className="mdb-settings-grid">
+            <section className="mdb-card mdb-settings-card">
+                <h3 className="mdb-settings-title">Appearance</h3>
+                <SimpleField name="Color theme" description="Light, dark or device theme" classes={classes}>
                     <Select className={classes.wider} value={colorTheme} onChange={handleThemeChange}>
                         <MenuItem value="light">Light</MenuItem>
                         <MenuItem value="dark">Dark</MenuItem>
                         <MenuItem value="system">Device Theme</MenuItem>
                     </Select>
                 </SimpleField>
-                <SimpleField name="Stretch Web MiniDisc Pro to fill the screen vertically" classes={classes} formControl={true}>
+                <SimpleField name="Retro Mode (beta)" description="Windows 95-inspired vintage interface" classes={classes}>
+                    <Switch checked={vintageMode} onChange={handleToggleVintageMode} />
+                </SimpleField>
+                <SimpleField name="Language" description="Français / English" classes={classes}>
+                    <span className="mdb-seg">
+                        <button type="button" className={french ? 'on' : ''} onClick={() => handleLanguage(true)}>
+                            FR
+                        </button>
+                        <button type="button" className={!french ? 'on' : ''} onClick={() => handleLanguage(false)}>
+                            EN
+                        </button>
+                    </span>
+                </SimpleField>
+                <SimpleField name="Stretch to fill the screen vertically" description="Fill the available height" classes={classes}>
                     <Switch checked={pageFullHeight} onChange={handlePageFullHeightChange} />
                 </SimpleField>
-                <SimpleField name="Stretch Web MiniDisc Pro to fill the screen horizontally" classes={classes} formControl={true}>
+                <SimpleField name="Stretch to fill the screen horizontally" description="Fill the available width" classes={classes}>
                     <Switch checked={pageFullWidth} onChange={handlePageFullWidthChange} />
                 </SimpleField>
                 <NativeFields classes={classes} section="Appearance" />
+            </section>
 
-                <DialogContentText className={classes.header}>Functionality</DialogContentText>
+            <section className="mdb-card mdb-settings-card">
+                <h3 className="mdb-settings-title">Functionality</h3>
                 <SimpleField
                     name="Enable full width title editing"
+                    description="Hiragana and Kanji alphabets"
                     classes={classes}
-                    formControl={true}
-                    tooltip="This advanced feature enables the use of Hiragana and Kanji alphabets. More about this in Support and FAQ."
                 >
                     <Switch checked={fullWidthSupport} onChange={handleToggleFullWidth} />
                 </SimpleField>
-                <SimpleField name="Enable disc-protected warning dialog" classes={classes} formControl={true}>
+                <SimpleField
+                    name="Enable disc-protected warning dialog"
+                    description="Ask for confirmation before writing"
+                    classes={classes}
+                >
                     <Switch checked={!discProtectedDialogDisabled} onChange={handleToggleDiscProtectedDialogDisabled} />
                 </SimpleField>
                 <SimpleField
                     name="Create a ZIP file when using 'Archive Disc'"
+                    description="May increase memory usage in homebrew mode"
                     classes={classes}
-                    formControl={true}
-                    tooltip="Enabling it might increase memory usage when using the Homebrew mode's 'Archive Disc' feature"
                 >
                     <Switch checked={archiveDiscCreateZip} onChange={handleToggleArchiveDiscCreateZip} />
                 </SimpleField>
                 <SimpleField
                     name="Use the slower exploit for ATRAC ripping"
+                    description="Fixes a lock-up on some Apple ARM Macs"
                     classes={classes}
-                    formControl={true}
-                    tooltip="This fixes a bug where the device would lock up on a small percentage of Apple ARM-based Macs"
                 >
                     <Switch checked={factoryModeUseSlowerExploit} onChange={handleToggleFactoryModeUseSlowerExploits} />
                 </SimpleField>
                 <SimpleField
                     name="Enable homebrew mode shortcuts"
+                    description="Quick access to homebrew features"
                     classes={classes}
-                    formControl={true}
-                    tooltip="This enables an additional section in the menu allowing you to easily access homebrew mode features from the main menu"
                 >
                     <Switch checked={factoryModeShortcuts} onChange={handleToggleFactoryModeShortcuts} />
                 </SimpleField>
                 <SimpleField
-                    name="Download raw streams from netmd-exploits (expert feature)"
+                    name="Download raw streams from netmd-exploits"
+                    description="Expert feature: .NERAW files"
                     classes={classes}
-                    formControl={true}
-                    tooltip="This will cause netmd-exploits to download .NERAW files instead of .AEA or .WAV. These files can be used to reconstruct the sector layout in the player's DRAM and rebuild the track in case of a corruption"
                 >
                     <Switch checked={factoryModeNERAWDownload} onChange={handleToggleFactoryModeNERAWDownload} />
                 </SimpleField>
                 <NativeFields classes={classes} section="Functionality" />
+            </section>
 
-                <DialogContentText className={classes.header}>Encoding</DialogContentText>
-                <SimpleField name="Installed encoders" classes={classes} formControl={true}>
+            <section className="mdb-card mdb-settings-card">
+                <h3 className="mdb-settings-title">Encoding</h3>
+                <SimpleField name="Installed encoders" description="Local or remote encoder" classes={classes}>
                     <Button onClick={showManageEncodersDialog}>Manage</Button>
                 </SimpleField>
-
-                <SimpleField name="LP / HiMD encoder to use" classes={classes}>
+                <SimpleField name="LP / HiMD encoder to use" description="Atracdenc or remote encoder" classes={classes}>
                     <Select className={classes.wider} value={currentExportServiceId} onChange={handleExportServiceChanges}>
                         {availableEncoderServices.map((n, i) => (
-                            <MenuItem value={n.encoderId} key={`encoder-${i}`} >
+                            <MenuItem value={n.encoderId} key={`encoder-${i}`}>
                                 {n.userFriendlyName}
                             </MenuItem>
                         ))}
-                        {availableEncoderServices.length === 0 &&
-                            <MenuItem disabled value="">No encoders installed</MenuItem>
-                        }
+                        {availableEncoderServices.length === 0 && (
+                            <MenuItem disabled value="">
+                                No encoders installed
+                            </MenuItem>
+                        )}
                     </Select>
                 </SimpleField>
-                {currentService && <>
-                    <Typography className={classes.encoderDescription}>
-                        {currentService.metadata.description}
-                    </Typography>
-                    <Typography className={classes.encoderDescription}>
-                        Version {currentService.metadata.version}
-                    </Typography>
-                    <Box className={classes.fieldMargin}>
-                        {currentService.customParameters?.map((n) =>
-                            <CustomParameterRendered
-                                parameter={n}
-                                values={currentExportServiceConfig!}
-                                parameterChangeCallback={handleExportServiceParameterChange}
-                                customClass={classes.noLeftMargin}/>
-                        )}
-                    </Box>
-                </>}
+                {currentService && (
+                    <>
+                        <Typography className={classes.encoderDescription}>{currentService.metadata.description}</Typography>
+                        <Typography className={classes.encoderDescription}>
+                            Version {currentService.metadata.version}
+                        </Typography>
+                        <Box>
+                            {currentService.customParameters?.map((n) => (
+                                <CustomParameterRendered
+                                    parameter={n}
+                                    values={currentExportServiceConfig!}
+                                    parameterChangeCallback={handleExportServiceParameterChange}
+                                    customClass={classes.noLeftMargin}
+                                />
+                            ))}
+                        </Box>
+                    </>
+                )}
+                <NativeFields classes={classes} section="Encoding" />
+            </section>
 
-                <DialogContentText className={classes.header}>Library</DialogContentText>
-                <SimpleField name="Library to use" classes={classes}>
+            <section className="mdb-card mdb-settings-card">
+                <h3 className="mdb-settings-title">Library</h3>
+                <SimpleField name="Library to use" description="Local files or remote library" classes={classes}>
                     <Select className={classes.wider} value={currentLibraryService} onChange={handleLibraryServiceChanges}>
                         <MenuItem value={-1} key="library-none">
                             None
@@ -451,24 +436,22 @@ export const SettingsDialog = (props: {}) => {
                 {currentLibrary && (
                     <>
                         <Typography className={classes.encoderDescription}>{currentLibrary.description}</Typography>
-                        <Box className={classes.fieldMargin}>
-                            {currentLibrary.customParameters?.map((n) =>
-                            <CustomParameterRendered
-                                parameter={n}
-                                values={currentLibraryServiceConfig!}
-                                parameterChangeCallback={handleLibraryServiceParameterChange}
-                                customClass={classes.noLeftMargin}/>
-                            )}
+                        <Box>
+                            {currentLibrary.customParameters?.map((n) => (
+                                <CustomParameterRendered
+                                    parameter={n}
+                                    values={currentLibraryServiceConfig!}
+                                    parameterChangeCallback={handleLibraryServiceParameterChange}
+                                    customClass={classes.noLeftMargin}
+                                />
+                            ))}
                         </Box>
                     </>
                 )}
-                <NativeFields classes={classes} section="Encoding" />
-            </DialogContent>
-            <DialogActions>
-                <Button disabled={!verifyIfInputsValid()} onClick={handleClose}>
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>
+                <SimpleField name="Version" description="MiniDiscBurner 1.0 · Web MiniDisc Pro 1.6.2" classes={classes}>
+                    <span className="mdb-pill">GPL-2.0</span>
+                </SimpleField>
+            </section>
+        </div>
     );
 };

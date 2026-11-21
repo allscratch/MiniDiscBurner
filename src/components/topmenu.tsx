@@ -129,7 +129,7 @@ export const TopMenu = function (props: { tracksSelected?: number[]; onClick?: (
     }, [setMenuAnchorEl, handleShortcutsClose]);
 
     const handleShowSettings = useCallback(() => {
-        dispatch(appActions.showSettingsDialog(true));
+        dispatch(appActions.setMainView('SETTINGS'));
         handleMenuClose();
     }, [dispatch, handleMenuClose]);
 

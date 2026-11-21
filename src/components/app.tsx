@@ -16,8 +16,10 @@ import { validateAndLoadEncoders } from '../redux/actions';
 import { EncoderDownloadDialog } from './encoder-download-dialog';
 import { StudioTopbar } from '../studio/topbar';
 import { AtmosphereBackdrop, AtmosphereSwatches } from '../studio/atmosphere';
+import SettingsScreen from '../studio/settings-screen';
 import '../studio/studio.css';
 import '../studio/atmosphere.css';
+import '../studio/settings.css';
 
 const Toc = lazy(() => import('./factory/factory'));
 const Controls = lazy(() => import('./controls'));
@@ -291,7 +293,7 @@ const InternalApp = () => {
                     <div className="mdb-shell-inner">
                         <StudioTopbar view={mainView} deviceName={deviceName} connected={deviceConnected} />
                         <Paper
-                            className={cx(classes.paper, {
+                            className={cx(classes.paper, 'mdb-paper', {
                                 [classes.paperShowsList]: deviceCapabilities.includes(0 /*Capability.listContent*/),
                                 [classes.paperFullHeight]: pageFullHeight,
                             })}
@@ -299,6 +301,7 @@ const InternalApp = () => {
                             {mainView === 'WELCOME' ? <Welcome /> : null}
                             {mainView === 'MAIN' ? <Main /> : null}
                             {mainView === 'FACTORY' ? <Toc /> : null}
+                            {mainView === 'SETTINGS' ? <SettingsScreen /> : null}
 
                             {mainView === 'MAIN' ? (
                                 <Box className={cx(classes.controlsContainer, 'mdb-controls')}>

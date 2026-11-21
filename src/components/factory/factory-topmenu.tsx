@@ -101,7 +101,7 @@ export const FactoryTopMenu = function(props: { onClick?: () => void }) {
     }, [setSubmenuAnchorEl, handleMenuClose]);
 
     const handleShowSettings = useCallback(() => {
-        dispatch(appActions.showSettingsDialog(true));
+        dispatch(appActions.setMainView('SETTINGS'));
         handleMenuClose();
     }, [dispatch, handleMenuClose]);
 

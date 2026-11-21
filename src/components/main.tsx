@@ -86,7 +86,6 @@ import { FactoryModeNoticeDialog } from './factory/factory-notice-dialog';
 import { FactoryModeProgressDialog } from './factory/factory-progress-dialog';
 import { SongRecognitionDialog } from './song-recognition-dialog';
 import { SongRecognitionProgressDialog } from './song-recognition-progress-dialog';
-import { SettingsDialog } from './settings-dialog';
 import { FactoryModeBadSectorDialog } from './factory/factory-bad-sector-dialog';
 import { DiscProtectedDialog } from './disc-protected-dialog';
 import { ContextMenu } from './context-menu';
@@ -981,7 +980,6 @@ export const Main = (props: {}) => {
             <FactoryModeNoticeDialog />
             <AboutDialog />
             <ChangelogDialog />
-            <SettingsDialog />
             <ManageEncodersDialog />
             <LocalLibraryDialog setUploadedFiles={setUploadedFiles} />
             <PanicDialog />
