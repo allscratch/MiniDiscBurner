@@ -1,5 +1,6 @@
 /* Écran « Paramètres » intégré à la page + correctifs d'espacement du studio.
-   Chargé après atmosphere.css : les valeurs ci-dessous prennent le pas. */
+   Chargé après atmosphere.css. La couche preview-fidelity.css est chargée
+   ensuite et aligne ses valeurs sur design-preview/atmospheric.html. */
 
 /* Studio : les surfaces s'enchaînent sans se chevaucher ------------------ */
 .mdb-shell .mdb-hero {

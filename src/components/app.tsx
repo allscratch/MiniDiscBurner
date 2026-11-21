@@ -20,6 +20,7 @@ import SettingsScreen from '../studio/settings-screen';
 import '../studio/studio.css';
 import '../studio/atmosphere.css';
 import '../studio/settings.css';
+import '../studio/preview-fidelity.css';
 
 const Toc = lazy(() => import('./factory/factory'));
 const Controls = lazy(() => import('./controls'));
