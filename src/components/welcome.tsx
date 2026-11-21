@@ -315,40 +315,44 @@ export const Welcome = (props: {}) => {
 
                         {browserSupported ? (
                             <React.Fragment>
-                                <button
-                                    type="button"
-                                    className="mdb-drop"
-                                    onClick={() => options[lastSelectedService]?.handler()}
-                                    disabled={connectingInProgress}
-                                >
-                                    <div className="mdb-drop-icon" aria-hidden="true">⌁</div>
-                                    <strong>Connecter un appareil NetMD</strong>
-                                    <small>WebUSB · Chromium / Edge / Brave</small>
-                                </button>
-
-                                <div className="mdb-row">
-                                    <SplitButton
-                                        options={options}
-                                        color="primary"
-                                        width={200}
-                                        disabled={doesServiceRequireChrome(availableServices[lastSelectedService]) && !runningChrome}
-                                        selectedIndex={lastSelectedService}
-                                        dropdownMapping={mapToEntry}
-                                        loading={connectingInProgress}
-                                    />
-                                    <Link
-                                        className="mdb-btn mdb-btn-ghost"
-                                        rel="noopener noreferrer"
-                                        target="_blank"
-                                        href="https://www.minidisc.wiki/guides/webminidisc"
+                                <div className="mdb-actions">
+                                    <button
+                                        type="button"
+                                        className="mdb-drop"
+                                        onClick={() => options[lastSelectedService]?.handler()}
+                                        disabled={connectingInProgress}
                                     >
-                                        <span>Guide de démarrage</span> <OpenInNewIcon fontSize="inherit" />
-                                    </Link>
+                                        <span className="mdb-drop-icon" aria-hidden="true">⌁</span>
+                                        <strong>Connecter un appareil NetMD</strong>
+                                        <small>WebUSB · Chromium / Edge / Brave</small>
+                                    </button>
+
+                                    <div className="mdb-row">
+                                        <SplitButton
+                                            options={options}
+                                            color="primary"
+                                            width={200}
+                                            disabled={doesServiceRequireChrome(availableServices[lastSelectedService]) && !runningChrome}
+                                            selectedIndex={lastSelectedService}
+                                            dropdownMapping={mapToEntry}
+                                            loading={connectingInProgress}
+                                        />
+                                        <Link
+                                            className="mdb-btn mdb-btn-ghost"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                            href="https://www.minidisc.wiki/guides/webminidisc"
+                                        >
+                                            <span>Guide de démarrage</span> <OpenInNewIcon fontSize="inherit" />
+                                        </Link>
+                                    </div>
                                 </div>
 
-                                <FormControl error={true} style={{ visibility: pairingFailed ? 'visible' : 'hidden' }}>
-                                    <FormHelperText>{pairingMessage}</FormHelperText>
-                                </FormControl>
+                                {pairingFailed && (
+                                    <FormControl error={true}>
+                                        <FormHelperText>{pairingMessage}</FormHelperText>
+                                    </FormControl>
+                                )}
                                 {!window.native?.interface && (
                                     <Tooltip
                                         title={
@@ -362,7 +366,7 @@ export const Welcome = (props: {}) => {
                                         }
                                     >
                                         <Alert severity="info" className={classes.notice}>
-                                            <b>Notice for users of the Vivaldi web browser</b> <br />
+                                            <b>Notice for users of the Vivaldi web browser</b>
                                         </Alert>
                                     </Tooltip>
                                 )}
