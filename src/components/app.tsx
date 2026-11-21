@@ -15,7 +15,9 @@ import { W95App } from './win95/app';
 import { validateAndLoadEncoders } from '../redux/actions';
 import { EncoderDownloadDialog } from './encoder-download-dialog';
 import { StudioTopbar } from '../studio/topbar';
+import { AtmosphereBackdrop, AtmosphereSwatches } from '../studio/atmosphere';
 import '../studio/studio.css';
+import '../studio/atmosphere.css';
 
 const Toc = lazy(() => import('./factory/factory'));
 const Controls = lazy(() => import('./controls'));
@@ -285,6 +287,7 @@ const InternalApp = () => {
                 }
             >
                 <main className={cx(classes.layout, 'mdb-shell', { [classes.layoutFullWidth]: pageFullWidth })}>
+                    <AtmosphereBackdrop />
                     <div className="mdb-shell-inner">
                         <StudioTopbar view={mainView} deviceName={deviceName} connected={deviceConnected} />
                         <Paper
@@ -303,6 +306,7 @@ const InternalApp = () => {
                                 </Box>
                             ) : null}
                         </Paper>
+                        <AtmosphereSwatches />
                         <Typography variant="body2" color="textSecondary" className={cx(classes.copyrightTypography, 'mdb-footer')}>
                             {'MiniDiscBurner © '}
                             {new Date().getFullYear()}
