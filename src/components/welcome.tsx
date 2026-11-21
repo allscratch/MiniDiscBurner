@@ -103,6 +103,32 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
+const MINIDISC_PHOTO = `${import.meta.env.BASE_URL}minidisc-photo.jpg`;
+
+/** Petit indicateur d'étape, purement décoratif. */
+function StepIndicator({ active }: { active: 1 | 2 }) {
+    return (
+        <div className="mdb-steps" aria-hidden="true">
+            <span className={'mdb-step' + (active === 1 ? ' active' : '')} />
+            <span className={'mdb-step' + (active === 2 ? ' active' : '')} />
+        </div>
+    );
+}
+
+/** Carte photo du MiniDisc, commune aux deux états de l'accueil. */
+function MiniDiscVisual() {
+    return (
+        <div className="mdb-visual" aria-hidden="true">
+            <span className="mdb-deco mdb-deco-a" />
+            <span className="mdb-deco mdb-deco-b" />
+            <div className="mdb-photo-card">
+                <img src={MINIDISC_PHOTO} alt="" />
+                <div className="mdb-photo-caption"><span className="mdb-caption-dot" /> MiniDisc · 64 mm</div>
+            </div>
+        </div>
+    );
+}
+
 export const Welcome = (props: {}) => {
     const { classes } = useStyles();
     const dispatch = useDispatch();
@@ -234,13 +260,17 @@ export const Welcome = (props: {}) => {
             {deviceConnected ? (
                 <div className="mdb-hero mdb-hero-single">
                     <section className="mdb-card mdb-device-card">
-                        <div className="mdb-eyebrow">Étape 2 · Appareil</div>
-                        <h2 className="mdb-h2">Appareil</h2>
+                        <MiniDiscVisual />
+                        <div className="mdb-card-content">
+                        <div className="mdb-section-head">
+                            <div className="mdb-eyebrow">Étape 2 · Appareil</div>
+                            <StepIndicator active={2} />
+                        </div>
                         <div className="mdb-device-head">
                             <div className="mdb-disc" aria-hidden="true" />
                             <div>
                                 <div className="mdb-device-name">{deviceName || 'Enregistreur NetMD'}</div>
-                                <div className="mdb-device-meta">NetMD · USB</div>
+                                <div className="mdb-device-meta"><span className="mdb-badge">PRÊT</span> NetMD · USB</div>
                             </div>
                         </div>
                         <div className="mdb-meter-label">
@@ -263,17 +293,24 @@ export const Welcome = (props: {}) => {
                                 Déconnecter
                             </button>
                         </div>
+                        </div>
                     </section>
                 </div>
             ) : (
                 <div className="mdb-hero mdb-hero-single">
                     <section className="mdb-card mdb-transfer-card">
-                        <div className="mdb-eyebrow">Étape 1 · Connexion</div>
+                        <MiniDiscVisual />
+                        <div className="mdb-card-content">
+                        <div className="mdb-section-head">
+                            <div className="mdb-eyebrow">Étape 1 · Connexion</div>
+                            <StepIndicator active={1} />
+                        </div>
                         <Typography component="h1" className="mdb-h1">
-                            Connectez votre enregistreur.
+                            Votre musique, <span className="mdb-accent-text">sur MiniDisc.</span>
+                            <br />Enfin simple.
                         </Typography>
                         <Typography component="p" className="mdb-lead">
-                            Sélectionnez votre modèle MiniDisc puis établissez la connexion WebUSB. Le reste de l’interface apparaîtra ensuite.
+                            Connectez votre enregistreur NetMD, choisissez vos pistes et laissez MiniDiscBurner s’occuper du reste. Une interface claire, du premier clic jusqu’au dernier ouvrage.
                         </Typography>
 
                         {browserSupported ? (
@@ -329,7 +366,11 @@ export const Welcome = (props: {}) => {
                                         </Alert>
                                     </Tooltip>
                                 )}
-                                <div className="mdb-formats">MP3 · WAV · FLAC · OGG · ATRAC · SP / LP2 / LP4 / HiMD</div>
+                                <div className="mdb-features">
+                                    <span className="mdb-feature"><b>01</b> WebUSB</span>
+                                    <span className="mdb-feature"><b>02</b> Encodage local</span>
+                                    <span className="mdb-feature"><b>03</b> SP · LP2 · LP4</span>
+                                </div>
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
@@ -381,6 +422,7 @@ export const Welcome = (props: {}) => {
                                 ) : null}
                             </React.Fragment>
                         )}
+                        </div>
                     </section>
                 </div>
             )}

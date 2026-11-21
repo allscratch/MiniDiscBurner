@@ -179,11 +179,7 @@ const darkTheme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 body: {
-                    background:
-                        'radial-gradient(900px 500px at 12% -10%, rgba(90, 169, 255, 0.12), transparent 60%),' +
-                        'radial-gradient(700px 400px at 100% 0%, rgba(140, 110, 255, 0.07), transparent 55%),' +
-                        '#0a0e16',
-                    backgroundAttachment: 'fixed',
+                    background: '#0a0e16',
                 },
             },
         },
@@ -259,10 +255,7 @@ const lightTheme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 body: {
-                    background:
-                        'radial-gradient(900px 500px at 12% -10%, rgba(90, 169, 255, 0.10), transparent 60%),' +
-                        '#f4f7fb',
-                    backgroundAttachment: 'fixed',
+                    background: '#f4f7fb',
                 },
             },
         },

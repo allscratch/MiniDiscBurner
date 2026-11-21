@@ -60,21 +60,23 @@ export function StudioTopbar({
     return (
         <div className="mdb-topbar">
             <div className="mdb-brand">
-                <span className="mdb-logo" aria-hidden="true">◉</span>
+                <span className="mdb-logo-box">
+                    <img className="mdb-logo-img" src={`${import.meta.env.BASE_URL}mdb-logo.png`} alt="" />
+                </span>
                 MiniDiscBurner
             </div>
             <nav className="mdb-nav">
                 <button type="button" className={'mdb-nav-item' + (view === 'WELCOME' ? ' active' : '')} onClick={goHome}>
-                    Home
+                    Accueil
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openLibrary}>
-                    Library
+                    Bibliothèque
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openSettings}>
-                    Settings
+                    Paramètres
                 </button>
                 <button type="button" className="mdb-nav-item" onClick={openHelp}>
-                    Help
+                    Aide
                 </button>
             </nav>
             <div className="mdb-spacer" />
@@ -85,12 +87,12 @@ export function StudioTopbar({
                         <strong>{deviceName || 'Appareil'}</strong> connecté
                     </>
                 ) : (
-                    'No device connected'
+                    'Aucun appareil connecté'
                 )}
             </div>
             {connected && (
-                <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Déconnecter">
-                    Disconnect
+                <button type="button" className="mdb-pill mdb-disconnect" onClick={handleDisconnect} title="Fermer la session USB (recommandé)">
+                    Déconnecter
                 </button>
             )}
             <button type="button" className="mdb-pill mdb-lang" onClick={toggleLanguage} title="Langue : Français / English">
