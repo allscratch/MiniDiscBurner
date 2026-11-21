@@ -216,7 +216,7 @@
 /* Hero, deux colonnes --------------------------------------------------- */
 .mdb-shell .mdb-hero {
     display: grid;
-    grid-template-columns: 1.35fr 0.85fr;
+    grid-template-columns: 0.85fr 1.35fr;
     gap: 20px;
     align-items: stretch;
 }

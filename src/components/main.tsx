@@ -584,47 +584,6 @@ export const Main = (props: {}) => {
     return (
         <React.Fragment>
             <div className="mdb-hero">
-                <section className="mdb-card mdb-transfer-card">
-                    <div className="mdb-eyebrow">Transfer studio</div>
-                    <Typography component="h1" className="mdb-h1">
-                        Transfer your music
-                        <br />
-                        to your MiniDisc.
-                    </Typography>
-                    <Typography component="p" className="mdb-lead">
-                        Drop your files, choose the format and let MiniDiscBurner do the rest. Your recorder is ready.
-                    </Typography>
-                    <button
-                        type="button"
-                        className="mdb-drop"
-                        onClick={() => open()}
-                        disabled={!deviceCapabilities.trackUpload}
-                    >
-                        <div className="mdb-drop-icon" aria-hidden="true">↥</div>
-                        <strong>Drop your files here</strong>
-                        <small>or click to browse your folders</small>
-                    </button>
-                    <div className="mdb-row">
-                        <button
-                            type="button"
-                            className="mdb-btn"
-                            onClick={openUploadMenu}
-                            disabled={!deviceCapabilities.trackUpload}
-                        >
-                            Choose files
-                        </button>
-                        <button
-                            type="button"
-                            className="mdb-btn mdb-btn-ghost"
-                            onClick={handleOpenLocalLibrary}
-                            disabled={!serviceRegistry.libraryService}
-                        >
-                            Library
-                        </button>
-                    </div>
-                    <div className="mdb-formats">MP3 · WAV · FLAC · OGG · ATRAC · SP / LP2 / LP4 / HiMD</div>
-                </section>
-
                 <aside className="mdb-card mdb-device-card">
                     <h2 className="mdb-h2">Device</h2>
                     <div className="mdb-device-head">
@@ -735,6 +694,47 @@ export const Main = (props: {}) => {
                         </button>
                     </div>
                 </aside>
+
+                <section className="mdb-card mdb-transfer-card">
+                    <div className="mdb-eyebrow">Transfer studio</div>
+                    <Typography component="h1" className="mdb-h1">
+                        Transfer your music
+                        <br />
+                        to your MiniDisc.
+                    </Typography>
+                    <Typography component="p" className="mdb-lead">
+                        Drop your files, choose the format and let MiniDiscBurner do the rest. Your recorder is ready.
+                    </Typography>
+                    <button
+                        type="button"
+                        className="mdb-drop"
+                        onClick={() => open()}
+                        disabled={!deviceCapabilities.trackUpload}
+                    >
+                        <div className="mdb-drop-icon" aria-hidden="true">↥</div>
+                        <strong>Drop your files here</strong>
+                        <small>or click to browse your folders</small>
+                    </button>
+                    <div className="mdb-row">
+                        <button
+                            type="button"
+                            className="mdb-btn"
+                            onClick={openUploadMenu}
+                            disabled={!deviceCapabilities.trackUpload}
+                        >
+                            Choose files
+                        </button>
+                        <button
+                            type="button"
+                            className="mdb-btn mdb-btn-ghost"
+                            onClick={handleOpenLocalLibrary}
+                            disabled={!serviceRegistry.libraryService}
+                        >
+                            Library
+                        </button>
+                    </div>
+                    <div className="mdb-formats">MP3 · WAV · FLAC · OGG · ATRAC · SP / LP2 / LP4 / HiMD</div>
+                </section>
             </div>
 
             <section className="mdb-card mdb-track-card">
