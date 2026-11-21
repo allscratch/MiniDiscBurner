@@ -370,11 +370,6 @@ export const Welcome = (props: {}) => {
                                         </Alert>
                                     </Tooltip>
                                 )}
-                                <div className="mdb-features">
-                                    <span className="mdb-feature"><b>01</b> WebUSB</span>
-                                    <span className="mdb-feature"><b>02</b> Local encoding</span>
-                                    <span className="mdb-feature"><b>03</b> SP · LP2 · LP4</span>
-                                </div>
                             </React.Fragment>
                         ) : (
                             <React.Fragment>

@@ -557,7 +557,6 @@ export const FR: Record<string, string> = {
   // Derniers contrôles de la revue
   '${formatTimeFromSeconds(disc.left)} remaining': '${formatTimeFromSeconds(disc.left)} restantes',
   '${bytesToHumanReadable(disc.left)} remaining': '${bytesToHumanReadable(disc.left)} restants',
-  "Local encoding": "Encodage local",
   "selected": "sélectionné",
   "group": "groupe",
   "ungroup": "dégrouper",

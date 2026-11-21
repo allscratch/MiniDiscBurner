@@ -565,29 +565,6 @@
     color: var(--mdb-text);
 }
 
-.mdb-shell .mdb-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 20px;
-}
-
-.mdb-shell .mdb-feature {
-    padding: 9px 12px;
-    border: 1px solid var(--mdb-line-soft);
-    border-radius: 10px;
-    background: var(--mdb-panel-2);
-    color: var(--mdb-muted);
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.mdb-shell .mdb-feature b {
-    margin-right: 6px;
-    color: var(--mdb-accent);
-    font-size: 10px;
-}
-
 .mdb-shell .mdb-hero-single .MuiFormHelperText-root {
     width: 100%;
     text-align: center;
