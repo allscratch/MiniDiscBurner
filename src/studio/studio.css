@@ -260,6 +260,7 @@
 
 .mdb-shell .mdb-visual {
     position: relative;
+    order: 2;
     display: grid;
     place-items: center;
     background: var(--mdb-panel-2);
@@ -322,6 +323,7 @@
 
 .mdb-shell .mdb-card-content {
     position: relative;
+    order: 1;
     z-index: 2;
     padding: 54px 56px;
     min-width: 0;
